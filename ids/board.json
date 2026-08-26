@@ -18,31 +18,12 @@
       "owner": "SA",
       "due": "2026-09-02",
       "done": false,
-      "rolls": 0,
+      "rolls": 1,
       "from": "",
-      "updatedAt": "2026-08-26T19:53:45.773Z"
-    },
-    {
-      "id": "mtaiekuztjbfv",
-      "what": "Tyler has a to do",
-      "owner": "tyler",
-      "due": "2026-09-02",
-      "done": true,
-      "rolls": 0,
-      "from": "",
-      "updatedAt": "2026-08-26T19:53:46.861Z"
+      "updatedAt": "2026-08-26T19:53:49.945Z"
     }
   ],
-  "solved": [
-    {
-      "id": "mtaic14mbf8xr",
-      "title": "Samsung",
-      "notes": "This is a test for samsung",
-      "attachments": [],
-      "links": [],
-      "on": "2026-08-26"
-    }
-  ],
+  "solved": [],
   "weeks": [
     "2026-08-24"
   ],
