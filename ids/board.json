@@ -1,16 +1,6 @@
 {
   "issues": [
     {
-      "id": "mtaic14mbf8xr",
-      "title": "Samsung",
-      "raisedBy": "Tyler",
-      "notes": "This is a test for samsung",
-      "created": "2026-08-26",
-      "updatedAt": "2026-08-26T19:49:34.746Z",
-      "attachments": [],
-      "links": []
-    },
-    {
       "id": "mtaigf1p9v42o",
       "title": "Emailing to do's",
       "raisedBy": "Tyler",
@@ -33,7 +23,16 @@
       "updatedAt": "2026-08-26T19:51:15.379Z"
     }
   ],
-  "solved": [],
+  "solved": [
+    {
+      "id": "mtaic14mbf8xr",
+      "title": "Samsung",
+      "notes": "This is a test for samsung",
+      "attachments": [],
+      "links": [],
+      "on": "2026-08-26"
+    }
+  ],
   "weeks": [
     "2026-08-24"
   ],
