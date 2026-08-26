@@ -1,0 +1,25 @@
+{
+  "week": "2026-08-24",
+  "closedAt": "2026-08-26T19:51:31.225Z",
+  "solved": [],
+  "completedTodos": [
+    {
+      "id": "mtaiekuztjbfv",
+      "what": "Tyler has a to do",
+      "owner": "tyler",
+      "due": "2026-09-02",
+      "done": true,
+      "rolls": 0,
+      "from": "",
+      "updatedAt": "2026-08-26T19:51:15.379Z"
+    }
+  ],
+  "carriedTodos": [],
+  "openIssues": [
+    {
+      "rank": 1,
+      "title": "Samsung",
+      "raisedBy": "Tyler"
+    }
+  ]
+}
