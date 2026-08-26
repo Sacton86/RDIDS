@@ -11,19 +11,10 @@
       "links": []
     }
   ],
-  "todos": [
-    {
-      "id": "mtaiekuztjbfv",
-      "what": "Tyler has a to do",
-      "owner": "tyler",
-      "due": "2026-09-02",
-      "done": true,
-      "rolls": 0,
-      "from": "",
-      "updatedAt": "2026-08-26T19:51:15.379Z"
-    }
-  ],
+  "todos": [],
   "solved": [],
-  "weeks": [],
-  "closedOn": null
+  "weeks": [
+    "2026-08-24"
+  ],
+  "closedOn": "2026-08-24"
 }
