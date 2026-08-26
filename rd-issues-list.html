@@ -1,0 +1,1688 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>R&amp;D — Issues List &amp; To-Dos</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --black:    #0a0a0a;
+  --red:      #cc1111;
+  --white:    #ffffff;
+  --gray-100: #f4f4f4;
+  --gray-200: #e2e2e2;
+  --gray-500: #888888;
+  --gray-700: #444444;
+  --amber:    #f0a500;
+  --green:    #28a745;
+}
+
+body {
+  font-family: 'Inter', sans-serif;
+  background: var(--gray-100);
+  color: var(--gray-700);
+  line-height: 1.7;
+  font-size: 15px;
+}
+button, input, textarea { font-family: inherit; font-size: inherit; color: inherit; }
+button { cursor: pointer; border: none; background: none; }
+:focus-visible { outline: 2px solid var(--red); outline-offset: 2px; }
+
+/* ── HEADER ── */
+header {
+  background: var(--black);
+  padding: 24px 48px;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+header img { height: 44px; }
+.header-badge {
+  background: var(--red);
+  color: var(--white);
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+  padding: 5px 13px;
+  border-radius: 4px;
+}
+header .spacer { flex: 1; }
+.hbtn {
+  color: #999;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+  padding: 5px 11px;
+  border: 1px solid #333;
+  border-radius: 4px;
+}
+.hbtn:hover { color: var(--white); border-color: #666; }
+
+.sync {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: .06em;
+  text-transform: uppercase;
+  color: #999;
+  padding: 5px 11px;
+  border: 1px solid #333;
+  border-radius: 4px;
+}
+.sync .dot { width: 7px; height: 7px; border-radius: 50%; background: var(--gray-500); flex-shrink: 0; }
+.sync.ok    .dot { background: var(--green); }
+.sync.busy  .dot { background: var(--amber); }
+.sync.err   .dot { background: var(--red); }
+.sync.local .dot { background: var(--gray-500); }
+
+/* ── TITLE BLOCK ── */
+.title-block {
+  background: linear-gradient(135deg, #111 0%, #1f1f1f 60%, #2a0404 100%);
+  color: var(--white);
+  padding: 40px 48px 34px;
+  border-bottom: 4px solid var(--red);
+}
+.sop-label {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: .14em;
+  text-transform: uppercase;
+  color: var(--red);
+  margin-bottom: 10px;
+}
+.title-block h1 {
+  font-size: 1.9rem;
+  font-weight: 700;
+  line-height: 1.2;
+  margin-bottom: 10px;
+  color: var(--white);
+}
+.title-block h1 span { color: var(--red); }
+.title-block > p { font-size: .95rem; color: #bbb; max-width: 640px; }
+.doc-meta {
+  margin-top: 26px;
+  display: flex;
+  gap: 36px;
+  flex-wrap: wrap;
+  padding-top: 20px;
+  border-top: 1px solid #333;
+}
+.doc-meta-item { font-size: 12px; color: #999; }
+.doc-meta-item strong { display: block; color: var(--white); font-size: 13px; margin-bottom: 2px; }
+.doc-meta-item strong.hot { color: var(--red); }
+
+/* ── MAIN ── */
+main {
+  max-width: 1240px;
+  margin: 0 auto;
+  padding: 40px 24px 70px;
+  display: grid;
+  grid-template-columns: minmax(0, 1.3fr) minmax(0, 1fr);
+  gap: 28px;
+  align-items: start;
+}
+.col { display: flex; flex-direction: column; }
+
+/* ── SECTION ── */
+.sop-section {
+  background: var(--white);
+  border-radius: 10px;
+  border: 1px solid var(--gray-200);
+  box-shadow: 0 2px 8px rgba(0,0,0,.05);
+  margin-bottom: 28px;
+  overflow: hidden;
+}
+.sop-section-header {
+  background: var(--black);
+  padding: 16px 28px;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+.section-num {
+  background: var(--red);
+  color: var(--white);
+  font-size: 13px;
+  font-weight: 700;
+  width: 32px; height: 32px;
+  border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0;
+}
+.sop-section-header h2 {
+  color: var(--white);
+  font-size: 1rem;
+  font-weight: 600;
+  letter-spacing: .01em;
+}
+.sop-section-header .tally {
+  margin-left: auto;
+  color: var(--gray-500);
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+}
+.sop-section-body { padding: 24px 28px; }
+.sop-section-body.flush { padding: 0; }
+
+/* ── ADD BAR ── */
+.addbar {
+  padding: 16px 28px;
+  background: #fafafa;
+  border-bottom: 1px solid var(--gray-200);
+  display: flex; gap: 10px; flex-wrap: wrap;
+}
+.addbar input {
+  border: 1px solid var(--gray-200);
+  border-radius: 6px;
+  padding: 9px 12px;
+  background: var(--white);
+  font-size: .9rem;
+}
+.addbar input:focus { outline: none; border-color: var(--red); }
+.addbar .grow  { flex: 1; min-width: 150px; }
+.addbar .short { width: 140px; flex: 0 0 auto; }
+.addbar input[type=date] { font-size: .84rem; color: var(--gray-700); }
+
+.btn {
+  background: var(--red);
+  color: var(--white);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+  padding: 9px 18px;
+  border-radius: 6px;
+  white-space: nowrap;
+}
+.btn:hover { background: #a80d0d; }
+.btn.ghost {
+  background: var(--white);
+  color: var(--gray-700);
+  border: 1px solid var(--gray-200);
+}
+.btn.ghost:hover { background: var(--gray-100); color: var(--black); }
+.btn.dark { background: var(--black); }
+.btn.dark:hover { background: #333; }
+
+/* ── ISSUE LIST ── */
+ul.issue-list { list-style: none; }
+.issue {
+  display: flex;
+  gap: 16px;
+  align-items: flex-start;
+  padding: 16px 28px 16px 25px;
+  border-bottom: 1px solid var(--gray-200);
+  border-left: 3px solid transparent;
+  cursor: pointer;
+}
+.issue:hover { background: #fafafa; }
+.issue.cursor { background: #fff5f5; border-left-color: var(--red); }
+.issue.benched { background: #fdecea; }
+.issue:last-child { border-bottom: none; }
+
+.step-bullet {
+  min-width: 26px; height: 26px;
+  background: var(--red);
+  color: var(--white);
+  border-radius: 50%;
+  font-size: 11px; font-weight: 700;
+  display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0; margin-top: 2px;
+}
+.issue.below .step-bullet { background: var(--gray-200); color: var(--gray-500); }
+
+.issue-body { flex: 1; min-width: 0; }
+.issue-body .t {
+  color: var(--black);
+  font-weight: 600;
+  font-size: .95rem;
+  line-height: 1.45;
+  word-break: break-word;
+}
+.issue.below .issue-body .t { color: var(--gray-700); font-weight: 500; }
+.issue-body .m {
+  font-size: 12px;
+  color: var(--gray-500);
+  margin-top: 3px;
+  display: flex; gap: 10px; flex-wrap: wrap; align-items: center;
+}
+.pill {
+  font-size: 10px; font-weight: 700;
+  letter-spacing: .06em; text-transform: uppercase;
+  padding: 2px 7px; border-radius: 3px;
+  background: var(--gray-100); color: var(--gray-500);
+}
+.pill.clip { background: #e8f0fe; color: #1a56a0; }
+
+.cutline {
+  display: flex; align-items: center; gap: 14px;
+  padding: 8px 28px;
+  background: var(--gray-100);
+  border-top: 1px solid var(--gray-200);
+  border-bottom: 1px solid var(--gray-200);
+}
+.cutline::before, .cutline::after {
+  content: ""; flex: 1; height: 1px; background: var(--gray-200);
+}
+.cutline span {
+  font-size: 10px; font-weight: 700;
+  letter-spacing: .12em; text-transform: uppercase;
+  color: var(--gray-500); white-space: nowrap;
+}
+
+/* ── BENCH ── */
+.bench-subject {
+  font-size: 1.15rem;
+  font-weight: 700;
+  color: var(--black);
+  line-height: 1.3;
+  margin-bottom: 6px;
+}
+.bench-meta { font-size: 12px; color: var(--gray-500); margin-bottom: 18px; }
+textarea {
+  width: 100%;
+  border: 1px solid var(--gray-200);
+  border-radius: 6px;
+  padding: 12px 14px;
+  min-height: 110px;
+  resize: vertical;
+  font-size: .9rem;
+  line-height: 1.6;
+  background: var(--white);
+}
+textarea:focus { outline: none; border-color: var(--red); }
+.field-label {
+  font-size: 11px; font-weight: 700;
+  letter-spacing: .08em; text-transform: uppercase;
+  color: var(--gray-500);
+  margin-bottom: 8px;
+  display: block;
+}
+
+/* attachments */
+.attachments { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 14px; }
+.thumb {
+  width: 76px; height: 76px;
+  border-radius: 6px;
+  border: 1px solid var(--gray-200);
+  overflow: hidden; position: relative;
+  background: var(--gray-100);
+  padding: 0;
+}
+.thumb img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.thumb .x, .linkchip .x {
+  position: absolute; top: 2px; right: 2px;
+  width: 18px; height: 18px; border-radius: 50%;
+  background: rgba(10,10,10,.75); color: #fff;
+  font-size: 12px; line-height: 18px; text-align: center;
+  opacity: 0;
+}
+.thumb:hover .x, .linkchip:hover .x { opacity: 1; }
+.linkchips { display: flex; flex-direction: column; gap: 6px; margin-top: 12px; }
+.linkchip {
+  display: flex; align-items: center; gap: 10px;
+  background: var(--gray-100);
+  border-left: 3px solid var(--red);
+  border-radius: 0 6px 6px 0;
+  padding: 8px 12px;
+  font-size: .85rem;
+  position: relative;
+}
+.linkchip a { color: var(--black); text-decoration: none; font-weight: 600; word-break: break-all; }
+.linkchip a:hover { color: var(--red); text-decoration: underline; }
+.linkchip .host { color: var(--gray-500); font-size: 11px; flex-shrink: 0; }
+.linkchip .x { position: static; opacity: .4; margin-left: auto; background: none; color: var(--gray-500); }
+.linkchip:hover .x { opacity: 1; }
+
+.solvebox { margin-top: 20px; padding-top: 20px; border-top: 1px solid var(--gray-200); }
+.row { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 10px; }
+.row input {
+  border: 1px solid var(--gray-200);
+  border-radius: 6px;
+  padding: 9px 12px;
+  font-size: .9rem;
+}
+.row input:focus { outline: none; border-color: var(--red); }
+.row .grow  { flex: 1; min-width: 150px; }
+.row .short { width: 140px; flex: 0 0 auto; }
+
+/* ── CALLOUTS ── */
+.callout-warn   { background: #fff8e1; border-left: 4px solid var(--amber); border-radius: 0 6px 6px 0; padding: 14px 18px; margin: 16px 0; font-size: .88rem; color: #5a4000; }
+.callout-warn strong   { color: #3a2800; display: block; margin-bottom: 2px; }
+.callout-info   { background: #e8f0fe; border-left: 4px solid #1a56a0; border-radius: 0 6px 6px 0; padding: 14px 18px; margin: 16px 0; font-size: .88rem; color: #1a3060; }
+.callout-info strong   { color: #0f1f40; display: block; margin-bottom: 2px; }
+.callout-danger { background: #fdecea; border-left: 4px solid var(--red); border-radius: 0 6px 6px 0; padding: 14px 18px; margin: 16px 0; font-size: .88rem; color: #7a1010; }
+.callout-danger strong { color: #4a0808; display: block; margin-bottom: 2px; }
+.callout-ok     { background: #e6f9ec; border-left: 4px solid var(--green); border-radius: 0 6px 6px 0; padding: 14px 18px; margin: 16px 0; font-size: .88rem; color: #1a4a2a; }
+.callout-ok strong     { color: #0f2e19; display: block; margin-bottom: 2px; }
+.callout-warn:first-child, .callout-info:first-child, .callout-danger:first-child { margin-top: 0; }
+
+/* ── CHECKLIST / TO-DOS ── */
+ul.checklist { list-style: none; }
+.todo {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  padding: 14px 28px;
+  border-bottom: 1px solid var(--gray-200);
+  border-left: 3px solid transparent;
+  font-size: .9rem;
+}
+.todo:hover { background: #fafafa; }
+.todo.cursor { background: #fff5f5; border-left-color: var(--red); }
+.todo:last-child { border-bottom: none; }
+.check-box {
+  width: 18px; height: 18px;
+  border: 2px solid var(--gray-200);
+  border-radius: 3px;
+  flex-shrink: 0; margin-top: 3px;
+  background: var(--white);
+  padding: 0; position: relative;
+}
+.check-box:hover { border-color: var(--red); }
+.todo.done .check-box { background: var(--green); border-color: var(--green); }
+.todo.done .check-box::after {
+  content: "\2713"; position: absolute; inset: 0;
+  color: #fff; font-size: 12px; font-weight: 700; line-height: 15px; text-align: center;
+}
+.todo-body { flex: 1; min-width: 0; }
+.todo-body .w { color: var(--black); font-weight: 500; line-height: 1.45; word-break: break-word; }
+.todo.done .todo-body .w { text-decoration: line-through; color: var(--gray-500); font-weight: 400; }
+.todo-body .m {
+  font-size: 12px; color: var(--gray-500); margin-top: 3px;
+  display: flex; gap: 8px; flex-wrap: wrap; align-items: center;
+}
+.todo-body .m b { color: var(--gray-700); font-weight: 600; }
+.due { font-size: 11px; font-weight: 600; color: var(--gray-500); white-space: nowrap; padding-top: 3px; }
+.due.late { color: var(--red); }
+.roll {
+  font-size: 10px; font-weight: 700;
+  letter-spacing: .06em; text-transform: uppercase;
+  padding: 2px 7px; border-radius: 3px;
+  background: var(--gray-100); color: var(--gray-500);
+}
+.roll.r2 { background: #fff8e1; color: #8a6000; }
+.roll.r3 { background: var(--red); color: #fff; }
+
+/* ── REFERENCE TABLE ── */
+.ref-table { width: 100%; border-collapse: collapse; font-size: .88rem; }
+.ref-table thead { background: #f4f4f4; }
+.ref-table th {
+  padding: 10px 14px; text-align: left;
+  font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: .06em;
+  color: var(--gray-500); border-bottom: 2px solid var(--gray-200);
+}
+.ref-table td { padding: 11px 14px; border-bottom: 1px solid var(--gray-200); vertical-align: top; }
+.ref-table tr:last-child td { border-bottom: none; }
+.ref-table .label { font-weight: 600; color: var(--black); white-space: nowrap; }
+.ref-table .detail { color: var(--gray-700); }
+
+/* ── CMD BLOCK ── */
+.cmd {
+  display: block;
+  background: #111;
+  color: #e8e8e8;
+  font-family: 'Courier New', monospace;
+  font-size: .78rem;
+  padding: 12px 16px;
+  border-radius: 6px;
+  border-left: 3px solid var(--red);
+  line-height: 1.7;
+  white-space: pre-wrap;
+  word-break: break-word;
+  max-height: 190px;
+  overflow-y: auto;
+}
+.cmd .sha { color: var(--red); }
+.cmd .who { color: #777; }
+
+.empty { padding: 34px 28px; text-align: center; color: var(--gray-500); font-size: .9rem; }
+.empty b { display: block; color: var(--gray-700); font-weight: 600; margin-bottom: 4px; }
+
+/* ── MODAL ── */
+.scrim {
+  position: fixed; inset: 0;
+  background: rgba(10,10,10,.55);
+  display: none; align-items: flex-start; justify-content: center;
+  padding: 60px 20px; z-index: 100; overflow-y: auto;
+}
+.scrim.open { display: flex; }
+.modal {
+  background: var(--white);
+  border-radius: 10px;
+  width: 100%; max-width: 620px;
+  overflow: hidden;
+  box-shadow: 0 20px 60px rgba(0,0,0,.3);
+}
+.modal-head {
+  background: var(--black); color: var(--white);
+  padding: 16px 28px;
+  display: flex; align-items: center; gap: 16px;
+}
+.modal-head h2 { font-size: 1rem; font-weight: 600; }
+.modal-head button { margin-left: auto; color: #888; font-size: 20px; line-height: 1; }
+.modal-head button:hover { color: var(--white); }
+.modal-body { padding: 26px 28px; }
+.fld { margin-bottom: 16px; }
+.fld input {
+  width: 100%;
+  border: 1px solid var(--gray-200);
+  border-radius: 6px;
+  padding: 10px 12px;
+  font-size: .9rem;
+}
+.fld input:focus { outline: none; border-color: var(--red); }
+.fld .hint { font-size: 12px; color: var(--gray-500); margin-top: 5px; }
+.split { display: flex; gap: 14px; flex-wrap: wrap; }
+.split > * { flex: 1; min-width: 180px; }
+.chk { display: flex; align-items: center; gap: 9px; font-size: .9rem; cursor: pointer; }
+.chk input { width: 16px; height: 16px; accent-color: var(--red); }
+kbd {
+  background: var(--gray-100);
+  border: 1px solid var(--gray-200);
+  border-bottom-width: 2px;
+  border-radius: 4px;
+  padding: 2px 7px;
+  font-family: 'Courier New', monospace;
+  font-size: .78rem;
+  font-weight: 700;
+  color: var(--black);
+  white-space: nowrap;
+}
+.divider { border: none; border-top: 1px solid var(--gray-200); margin: 20px 0; }
+
+/* ── TOAST ── */
+.toast {
+  position: fixed; left: 50%; bottom: 28px; transform: translateX(-50%);
+  background: var(--black); color: var(--white);
+  padding: 12px 22px; border-radius: 6px;
+  font-size: .85rem; font-weight: 500;
+  border-left: 3px solid var(--red);
+  opacity: 0; pointer-events: none; transition: opacity .18s;
+  z-index: 200; max-width: 90vw;
+}
+.toast.show { opacity: 1; }
+
+/* ── FOOTER ── */
+footer { background: var(--black); color: #555; text-align: center; padding: 24px; font-size: .78rem; }
+footer span { color: var(--red); }
+
+@media (max-width: 980px) {
+  main { grid-template-columns: 1fr; padding: 24px 16px 60px; gap: 0; }
+  header { padding: 16px 20px; }
+  .title-block { padding: 30px 20px 26px; }
+  .sop-section-body, .addbar, .issue, .todo { padding-left: 20px; padding-right: 20px; }
+}
+@media print {
+  body { background: #fff; font-size: 13px; }
+  header, footer, .addbar, .btn, .hbtn, .sync { display: none; }
+  main { display: block; max-width: 100%; padding: 0; }
+  .sop-section { box-shadow: none; page-break-inside: avoid; }
+}
+@media (prefers-reduced-motion: reduce) { * { transition: none !important; } }
+</style>
+</head>
+<body>
+
+<header>
+  <img src="https://i.imgur.com/8Lz8tfU.png" alt="Impact LED Signs" />
+  <span class="header-badge">R&amp;D — Issues List</span>
+  <span class="spacer"></span>
+  <span class="sync local" id="sync"><span class="dot"></span><span id="syncTxt">Local only</span></span>
+  <button class="hbtn" id="recapBtn">Recap</button>
+  <button class="hbtn" id="keysBtn">? Keys</button>
+  <button class="hbtn" id="cfgBtn">Repo</button>
+</header>
+
+<div class="title-block">
+  <div class="sop-label">Research &amp; Development</div>
+  <h1>Issues List &amp; <span>To-Dos</span></h1>
+  <p>Rank what's blocking the team, work the top three all the way to solved, and let each one leave behind an owner and a date. Every change commits to git.</p>
+  <div class="doc-meta">
+    <div class="doc-meta-item"><strong id="mWeek">&mdash;</strong>Week of</div>
+    <div class="doc-meta-item"><strong id="mIssues">0</strong>Open issues</div>
+    <div class="doc-meta-item"><strong id="mTodos">0</strong>Open to-dos</div>
+    <div class="doc-meta-item"><strong id="mLate" class="hot">0</strong>Past due</div>
+    <div class="doc-meta-item"><strong id="mSync">Never</strong>Last commit</div>
+  </div>
+</div>
+
+<main>
+
+  <div class="col">
+
+    <div class="sop-section">
+      <div class="sop-section-header">
+        <div class="section-num">1</div>
+        <h2>Issues List</h2>
+        <span class="tally" id="tallyIssues">0 open</span>
+      </div>
+      <div class="addbar">
+        <input type="text" id="qIssue" class="grow" placeholder="What's the issue?" maxlength="200">
+        <input type="text" id="qRaiser" class="short" placeholder="Raised by" maxlength="40">
+        <button class="btn" id="addIssue">Add</button>
+      </div>
+      <div class="sop-section-body flush">
+        <ul class="issue-list" id="issues"></ul>
+      </div>
+    </div>
+
+    <div class="sop-section">
+      <div class="sop-section-header">
+        <div class="section-num">2</div>
+        <h2>On the Bench</h2>
+        <span class="tally" id="tallyBench"></span>
+      </div>
+      <div class="sop-section-body" id="bench"></div>
+    </div>
+
+  </div>
+
+  <div class="col">
+
+    <div class="sop-section">
+      <div class="sop-section-header">
+        <div class="section-num">3</div>
+        <h2>To-Dos</h2>
+        <span class="tally" id="tallyTodos">0 open</span>
+      </div>
+      <div class="addbar">
+        <input type="text" id="qTodo" class="grow" placeholder="Add a to-do" maxlength="200">
+        <input type="text" id="qOwner" class="short" placeholder="Owner" maxlength="40">
+        <input type="date" id="qDue" class="short">
+        <button class="btn" id="addTodo">Add</button>
+      </div>
+      <div class="sop-section-body flush">
+        <ul class="checklist" id="todos"></ul>
+      </div>
+    </div>
+
+    <div class="sop-section">
+      <div class="sop-section-header">
+        <div class="section-num">4</div>
+        <h2>Archive</h2>
+        <span class="tally" id="tallyArchive"></span>
+      </div>
+      <div class="sop-section-body">
+        <div id="archiveWarn"></div>
+        <span class="field-label">Recent commits</span>
+        <span class="cmd" id="commitLog">No commits yet &mdash; connect a repo to start writing history.</span>
+        <hr class="divider" />
+        <span class="field-label">Archived weeks</span>
+        <table class="ref-table" id="weeksTable"><tbody></tbody></table>
+        <div class="row" style="margin-top:18px">
+          <button class="btn dark" id="closeWeek">Close out the week</button>
+          <button class="btn ghost" id="pullBtn">Pull latest</button>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</main>
+
+<footer>
+  <p>Impact LED Signs &nbsp;&middot;&nbsp; <span>Internal Use Only &mdash; R&amp;D Issues List</span> &nbsp;&middot;&nbsp; v1.0.0 &nbsp;&middot;&nbsp; August 2026</p>
+</footer>
+
+<div class="scrim" id="cfgScrim">
+  <div class="modal">
+    <div class="modal-head">
+      <h2>Repository</h2>
+      <button data-close="1" aria-label="Close">&times;</button>
+    </div>
+    <div class="modal-body">
+      <div class="callout-info">
+        <strong>Your token stays in this browser</strong>
+        It is written to localStorage on this machine only and is never committed. Every change you make is authored by you in the commit history.
+      </div>
+      <div class="split">
+        <div class="fld">
+          <span class="field-label">Owner</span>
+          <input type="text" id="cOwner" placeholder="Sacton86" spellcheck="false">
+        </div>
+        <div class="fld">
+          <span class="field-label">Repository</span>
+          <input type="text" id="cRepo" placeholder="rd-issues" spellcheck="false">
+        </div>
+      </div>
+      <div class="split">
+        <div class="fld">
+          <span class="field-label">Branch</span>
+          <input type="text" id="cBranch" placeholder="main" spellcheck="false">
+        </div>
+        <div class="fld">
+          <span class="field-label">Data path</span>
+          <input type="text" id="cPath" placeholder="ids/board.json" spellcheck="false">
+        </div>
+      </div>
+      <div class="fld">
+        <span class="field-label">Fine-grained token</span>
+        <input type="password" id="cToken" placeholder="github_pat_..." spellcheck="false">
+        <div class="hint">Scope it to this one repository with <strong>Contents: read and write</strong>. Nothing else is needed.</div>
+      </div>
+      <div class="fld">
+        <label class="chk"><input type="checkbox" id="cPrivate"> Repository is private</label>
+        <div class="hint">Private repos can't hot-link images, so attachments are fetched through the API instead. Slightly slower, works the same.</div>
+      </div>
+      <hr class="divider" />
+      <div class="row">
+        <button class="btn" id="cSave">Save and connect</button>
+        <button class="btn ghost" id="cTest">Test connection</button>
+        <button class="btn ghost" id="cForget">Disconnect</button>
+      </div>
+      <div id="cResult"></div>
+    </div>
+  </div>
+</div>
+
+<div class="scrim" id="keysScrim">
+  <div class="modal">
+    <div class="modal-head">
+      <h2>Keyboard</h2>
+      <button data-close="1" aria-label="Close">&times;</button>
+    </div>
+    <div class="modal-body">
+      <table class="ref-table">
+        <thead><tr><th style="width:38%">Key</th><th>Action</th></tr></thead>
+        <tbody>
+          <tr><td class="label"><kbd>j</kbd> <kbd>k</kbd></td><td class="detail">Move the cursor down / up</td></tr>
+          <tr><td class="label"><kbd>Tab</kbd></td><td class="detail">Switch between the issues list and to-dos</td></tr>
+          <tr><td class="label"><kbd>J</kbd> <kbd>K</kbd></td><td class="detail">Re-rank the selected issue down / up</td></tr>
+          <tr><td class="label"><kbd>Enter</kbd></td><td class="detail">Put the selected issue on the bench</td></tr>
+          <tr><td class="label"><kbd>Space</kbd></td><td class="detail">Check off the selected to-do</td></tr>
+          <tr><td class="label"><kbd>s</kbd></td><td class="detail">Solve whatever is on the bench</td></tr>
+          <tr><td class="label"><kbd>n</kbd></td><td class="detail">New issue</td></tr>
+          <tr><td class="label"><kbd>t</kbd></td><td class="detail">New to-do</td></tr>
+          <tr><td class="label"><kbd>d</kbd></td><td class="detail">Delete the selected row</td></tr>
+          <tr><td class="label"><kbd>Ctrl</kbd> + <kbd>S</kbd></td><td class="detail">Commit now</td></tr>
+          <tr><td class="label"><kbd>Ctrl</kbd> + <kbd>V</kbd></td><td class="detail">Attach a pasted image or link to the bench</td></tr>
+          <tr><td class="label"><kbd>Esc</kbd></td><td class="detail">Clear the bench, close a dialog, leave a field</td></tr>
+          <tr><td class="label"><kbd>?</kbd></td><td class="detail">This list</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+/* ══════════ STATE ══════════ */
+var LS_BOARD = "impact-ids-board";
+var LS_CFG   = "impact-ids-cfg";
+
+var S = { issues: [], todos: [], solved: [], weeks: [], closedOn: null };
+var CFG = { owner:"", repo:"", branch:"main", path:"ids/board.json", token:"", private:false };
+
+var sha = null;
+var benchId = null;
+var solving = false;
+var pane = "issues";
+var cur = { issues: 0, todos: 0 };
+var pushTimer = null;
+var pushing = false;
+var dirty = false;
+
+function $(id) { return document.getElementById(id); }
+function uid() { return Date.now().toString(36) + Math.random().toString(36).slice(2, 7); }
+function esc(s) {
+  return String(s == null ? "" : s).replace(/[&<>"']/g, function (c) {
+    return { "&":"&amp;", "<":"&lt;", ">":"&gt;", '"':"&quot;", "'":"&#39;" }[c];
+  });
+}
+function now() { return new Date().toISOString(); }
+
+function isoDay(d) { return new Date(d.getTime() - d.getTimezoneOffset() * 60000).toISOString().slice(0, 10); }
+function today() { return isoDay(new Date()); }
+function addDays(n) { return isoDay(new Date(Date.now() + n * 86400000)); }
+function shortDate(s) { return s ? s.slice(5).replace("-", "/") : ""; }
+
+function monday() {
+  var n = new Date();
+  n.setDate(n.getDate() - ((n.getDay() + 6) % 7));
+  return isoDay(n);
+}
+
+function toast(msg) {
+  var t = $("toast");
+  t.textContent = msg;
+  t.classList.add("show");
+  clearTimeout(t._t);
+  t._t = setTimeout(function () { t.classList.remove("show"); }, 2400);
+}
+
+/* ══════════ BASE64 (UTF-8 safe, chunked) ══════════ */
+function b64encode(bytes) {
+  var out = "", CH = 0x8000;
+  for (var i = 0; i < bytes.length; i += CH) {
+    out += String.fromCharCode.apply(null, bytes.subarray(i, i + CH));
+  }
+  return btoa(out);
+}
+function strToB64(s) { return b64encode(new TextEncoder().encode(s)); }
+function b64ToStr(b) {
+  var bin = atob(b.replace(/\s/g, ""));
+  var arr = new Uint8Array(bin.length);
+  for (var i = 0; i < bin.length; i++) arr[i] = bin.charCodeAt(i);
+  return new TextDecoder().decode(arr);
+}
+function b64ToBytes(b) {
+  var bin = atob(b.replace(/\s/g, ""));
+  var arr = new Uint8Array(bin.length);
+  for (var i = 0; i < bin.length; i++) arr[i] = bin.charCodeAt(i);
+  return arr;
+}
+
+/* ══════════ LOCAL PERSISTENCE ══════════ */
+function saveLocal() {
+  try { localStorage.setItem(LS_BOARD, JSON.stringify(S)); }
+  catch (e) { toast("Local storage is full - attachments may not be kept"); }
+}
+function loadLocal() {
+  try {
+    var raw = localStorage.getItem(LS_BOARD);
+    if (raw) {
+      var d = JSON.parse(raw);
+      S = {
+        issues: d.issues || [], todos: d.todos || [], solved: d.solved || [],
+        weeks: d.weeks || [], closedOn: d.closedOn || null
+      };
+    }
+    var c = localStorage.getItem(LS_CFG);
+    if (c) {
+      var p = JSON.parse(c);
+      for (var k in p) if (Object.prototype.hasOwnProperty.call(p, k)) CFG[k] = p[k];
+    }
+  } catch (e) {}
+}
+function connected() { return !!(CFG.owner && CFG.repo && CFG.token); }
+
+/* ══════════ GITHUB ══════════ */
+function setSync(kind, text) {
+  $("sync").className = "sync " + kind;
+  $("syncTxt").textContent = text;
+}
+
+function gh(path, opts) {
+  opts = opts || {};
+  var headers = {
+    "Authorization": "Bearer " + CFG.token,
+    "Accept": "application/vnd.github+json",
+    "X-GitHub-Api-Version": "2022-11-28"
+  };
+  if (opts.headers) for (var k in opts.headers) headers[k] = opts.headers[k];
+  return fetch("https://api.github.com" + path, {
+    method: opts.method || "GET",
+    headers: headers,
+    body: opts.body
+  });
+}
+
+function encPath(p) {
+  return p.split("/").map(encodeURIComponent).join("/");
+}
+function contentsUrl(p) {
+  return "/repos/" + encodeURIComponent(CFG.owner) + "/" + encodeURIComponent(CFG.repo) +
+         "/contents/" + encPath(p) + "?ref=" + encodeURIComponent(CFG.branch);
+}
+function putUrl(p) {
+  return "/repos/" + encodeURIComponent(CFG.owner) + "/" + encodeURIComponent(CFG.repo) +
+         "/contents/" + encPath(p);
+}
+
+function getFile(path) {
+  return gh(contentsUrl(path)).then(function (res) {
+    if (res.status === 404) return null;
+    if (!res.ok) throw new Error("GitHub " + res.status);
+    return res.json();
+  });
+}
+
+function putFile(path, b64, message, existingSha) {
+  var body = { message: message, content: b64, branch: CFG.branch };
+  if (existingSha) body.sha = existingSha;
+  return gh(putUrl(path), {
+    method: "PUT",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(body)
+  });
+}
+
+/* Merge remote into local by id; newest updatedAt wins. Local ordering is kept
+   for issues that exist locally, and remote-only issues are appended. */
+function mergeBoards(local, remote) {
+  function pick(a, b) {
+    if (!a) return b;
+    if (!b) return a;
+    return (a.updatedAt || "") >= (b.updatedAt || "") ? a : b;
+  }
+  function mergeList(l, r) {
+    var rm = {}, out = [], seen = {}, i;
+    for (i = 0; i < (r || []).length; i++) rm[r[i].id] = r[i];
+    for (i = 0; i < (l || []).length; i++) { out.push(pick(l[i], rm[l[i].id])); seen[l[i].id] = 1; }
+    for (i = 0; i < (r || []).length; i++) if (!seen[r[i].id]) out.push(r[i]);
+    return out;
+  }
+
+  var solved = [], solvedIds = {};
+  var all = (local.solved || []).concat(remote.solved || []);
+  for (var i = 0; i < all.length; i++) {
+    if (!solvedIds[all[i].id]) { solvedIds[all[i].id] = 1; solved.push(all[i]); }
+  }
+
+  var weeks = {};
+  (local.weeks || []).concat(remote.weeks || []).forEach(function (w) { weeks[w] = 1; });
+
+  return {
+    issues: mergeList(local.issues, remote.issues).filter(function (x) { return !solvedIds[x.id]; }),
+    todos:  mergeList(local.todos, remote.todos),
+    solved: solved,
+    weeks:  Object.keys(weeks).sort().reverse(),
+    closedOn: (local.closedOn || "") > (remote.closedOn || "") ? local.closedOn : remote.closedOn
+  };
+}
+
+function pull(quiet) {
+  if (!connected()) { setSync("local", "Local only"); return Promise.resolve(); }
+  setSync("busy", "Pulling");
+  return getFile(CFG.path).then(function (f) {
+    if (!f) {
+      sha = null;
+      setSync("ok", "New file");
+      if (!quiet) toast("No board in the repo yet - the next commit creates it");
+      return;
+    }
+    sha = f.sha;
+    S = mergeBoards(S, JSON.parse(b64ToStr(f.content)));
+    saveLocal();
+    renderAll();
+    setSync("ok", "Synced");
+    if (!quiet) toast("Pulled from " + CFG.owner + "/" + CFG.repo);
+  }).catch(function (e) {
+    setSync("err", "Pull failed");
+    if (!quiet) toast("Pull failed: " + e.message);
+  });
+}
+
+function schedulePush(reason) {
+  dirty = true;
+  saveLocal();
+  if (!connected()) { setSync("local", "Local only"); return; }
+  setSync("busy", "Pending");
+  clearTimeout(pushTimer);
+  pushTimer = setTimeout(function () { push(reason); }, 1500);
+}
+
+function push(message, isRetry) {
+  if (!connected() || pushing) return Promise.resolve();
+  pushing = true;
+  setSync("busy", "Committing");
+
+  return putFile(CFG.path, strToB64(JSON.stringify(S, null, 2)), message || "Update issues list", sha)
+    .then(function (res) {
+      if (res.status === 409 || res.status === 422) {
+        // Someone committed first. Re-read, merge, retry once.
+        return getFile(CFG.path).then(function (f) {
+          if (f) {
+            sha = f.sha;
+            S = mergeBoards(S, JSON.parse(b64ToStr(f.content)));
+            saveLocal();
+            renderAll();
+          } else {
+            sha = null;
+          }
+          pushing = false;
+          if (!isRetry) return push(message, true);
+          throw new Error("conflict with another editor");
+        });
+      }
+      if (!res.ok) {
+        return res.text().then(function (t) { throw new Error(res.status + " " + t.slice(0, 120)); });
+      }
+      return res.json().then(function (data) {
+        sha = data.content.sha;
+        dirty = false;
+        setSync("ok", "Synced");
+        $("mSync").textContent = new Date().toLocaleTimeString([], { hour: "numeric", minute: "2-digit" });
+        loadCommits();
+      });
+    })
+    .catch(function (e) {
+      setSync("err", "Not committed");
+      toast("Commit failed: " + e.message);
+    })
+    .then(function () { pushing = false; });
+}
+
+function loadCommits() {
+  if (!connected()) return;
+  gh("/repos/" + CFG.owner + "/" + CFG.repo + "/commits?path=" + encodeURIComponent(CFG.path) +
+     "&sha=" + encodeURIComponent(CFG.branch) + "&per_page=8")
+    .then(function (res) { return res.ok ? res.json() : null; })
+    .then(function (list) {
+      if (!list || !list.length) return;
+      $("commitLog").innerHTML = list.map(function (c) {
+        var msg = (c.commit.message || "").split("\n")[0];
+        var who = (c.author && c.author.login) || (c.commit.author && c.commit.author.name) || "unknown";
+        var when = new Date(c.commit.author.date).toLocaleDateString([], { month: "short", day: "numeric" });
+        return '<span class="sha">' + c.sha.slice(0, 7) + "</span>  " + esc(msg) +
+               '\n         <span class="who">' + esc(who) + " \u00b7 " + when + "</span>";
+      }).join("\n");
+    })
+    .catch(function () {});
+}
+
+function loadWeeks() {
+  var tb = $("weeksTable").querySelector("tbody");
+  if (!S.weeks.length) {
+    tb.innerHTML = '<tr><td class="detail" style="color:var(--gray-500)">Nothing archived yet. Closing out a week writes a snapshot to <code>ids/weeks/</code>.</td></tr>';
+    $("tallyArchive").textContent = "";
+    return;
+  }
+  $("tallyArchive").textContent = S.weeks.length + " weeks";
+  tb.innerHTML = S.weeks.slice(0, 12).map(function (w) {
+    var url = connected()
+      ? "https://github.com/" + CFG.owner + "/" + CFG.repo + "/blob/" + CFG.branch + "/ids/weeks/" + w + ".json"
+      : null;
+    return '<tr><td class="label">' + w + '</td><td class="detail">' +
+      (url ? '<a href="' + url + '" target="_blank" rel="noopener" style="color:var(--red);text-decoration:none;font-weight:600">View snapshot &rarr;</a>' : "Local only") +
+      "</td></tr>";
+  }).join("");
+}
+
+/* ══════════ ATTACHMENTS ══════════ */
+var blobCache = {};
+
+function shrink(file) {
+  return createImageBitmap(file).then(function (bmp) {
+    var max = 1600;
+    var scale = Math.min(1, max / Math.max(bmp.width, bmp.height));
+    var w = Math.round(bmp.width * scale), h = Math.round(bmp.height * scale);
+    var cv = document.createElement("canvas");
+    cv.width = w; cv.height = h;
+    cv.getContext("2d").drawImage(bmp, 0, 0, w, h);
+    var webp = cv.toDataURL("image/webp").indexOf("data:image/webp") === 0;
+    var type = webp ? "image/webp" : "image/jpeg";
+    return new Promise(function (r) {
+      cv.toBlob(function (blob) { r({ blob: blob, w: w, h: h, ext: webp ? "webp" : "jpg" }); }, type, 0.82);
+    });
+  });
+}
+
+function attachImage(file) {
+  var it = findIssue(benchId);
+  if (!it) { toast("Put an issue on the bench first"); return; }
+
+  toast("Processing image...");
+  shrink(file).then(function (out) {
+    return out.blob.arrayBuffer().then(function (ab) {
+      var b64 = b64encode(new Uint8Array(ab));
+      var name = it.id + "-" + Math.random().toString(36).slice(2, 7) + "." + out.ext;
+      var path = "ids/assets/" + name;
+      if (!it.attachments) it.attachments = [];
+
+      if (connected()) {
+        setSync("busy", "Uploading");
+        return putFile(path, b64, "Attach " + name + " to: " + it.title.slice(0, 60), null).then(function (res) {
+          if (!res.ok) { setSync("err", "Upload failed"); toast("Image upload failed (" + res.status + ")"); return; }
+          it.attachments.push({ id: uid(), path: path, w: out.w, h: out.h });
+          blobCache[path] = URL.createObjectURL(out.blob);
+          setSync("ok", "Synced");
+          finish();
+        });
+      }
+      it.attachments.push({ id: uid(), data: "data:" + out.blob.type + ";base64," + b64, w: out.w, h: out.h });
+      toast("Attached locally - connect a repo to share it");
+      finish();
+
+      function finish() {
+        it.updatedAt = now();
+        schedulePush("Attach image to: " + it.title.slice(0, 60));
+        renderBench();
+      }
+    });
+  }).catch(function () { toast("Couldn't read that image"); });
+}
+
+function imgSrc(a) {
+  if (a.data) return a.data;
+  if (Object.prototype.hasOwnProperty.call(blobCache, a.path)) return blobCache[a.path];
+  if (!connected()) return "";
+  if (!CFG.private) {
+    blobCache[a.path] = "https://raw.githubusercontent.com/" + CFG.owner + "/" + CFG.repo + "/" + CFG.branch + "/" + a.path;
+    return blobCache[a.path];
+  }
+  // Private repo: pull bytes through the API, then swap in a blob URL.
+  blobCache[a.path] = "";
+  gh(contentsUrl(a.path))
+    .then(function (r) { return r.ok ? r.json() : null; })
+    .then(function (f) {
+      if (!f) return;
+      blobCache[a.path] = URL.createObjectURL(new Blob([b64ToBytes(f.content)]));
+      renderBench();
+    })
+    .catch(function () {});
+  return "";
+}
+
+function attachLink(url) {
+  var it = findIssue(benchId);
+  if (!it) { toast("Put an issue on the bench first"); return; }
+  if (!it.links) it.links = [];
+  var host = url;
+  try { host = new URL(url).hostname.replace(/^www\./, ""); } catch (e) {}
+  var link = { id: uid(), url: url, label: url, host: host };
+  it.links.push(link);
+  it.updatedAt = now();
+  renderBench();
+  schedulePush("Attach link to: " + it.title.slice(0, 60));
+  enrichGitHubLink(link, it);
+}
+
+/* A pasted GitHub issue or PR URL gets its real title and state, since we
+   already hold a token. Anything else just shows its hostname. */
+function enrichGitHubLink(link, issue) {
+  if (!connected()) return;
+  var m = link.url.match(/github\.com\/([^\/]+)\/([^\/]+)\/(issues|pull)\/(\d+)/);
+  if (!m) return;
+  gh("/repos/" + m[1] + "/" + m[2] + "/issues/" + m[4])
+    .then(function (res) { return res.ok ? res.json() : null; })
+    .then(function (d) {
+      if (!d) return;
+      link.label = "#" + d.number + " " + d.title;
+      link.host = m[2] + " \u00b7 " + d.state;
+      issue.updatedAt = now();
+      renderBench();
+      saveLocal();
+    })
+    .catch(function () {});
+}
+
+/* ══════════ RENDER ══════════ */
+function findIssue(id) {
+  for (var i = 0; i < S.issues.length; i++) if (S.issues[i].id === id) return S.issues[i];
+  return null;
+}
+function indexOfIssue(id) {
+  for (var i = 0; i < S.issues.length; i++) if (S.issues[i].id === id) return i;
+  return -1;
+}
+
+function renderAll() {
+  renderIssues();
+  renderBench();
+  renderTodos();
+  renderMeta();
+  loadWeeks();
+}
+
+function renderMeta() {
+  var openTodos = S.todos.filter(function (t) { return !t.done; });
+  var late = openTodos.filter(function (t) { return t.due && t.due < today(); });
+  $("mWeek").textContent = new Date(monday() + "T12:00:00").toLocaleDateString([], { month: "short", day: "numeric" });
+  $("mIssues").textContent = S.issues.length;
+  $("mTodos").textContent = openTodos.length;
+  $("mLate").textContent = late.length;
+  $("mLate").className = late.length ? "hot" : "";
+  $("tallyIssues").textContent = S.issues.length + " open";
+  $("tallyTodos").textContent = openTodos.length + " open";
+}
+
+function renderIssues() {
+  var el = $("issues");
+  if (!S.issues.length) {
+    el.innerHTML = '<li class="empty"><b>Nothing on the list.</b>Add what\'s actually blocking the team, then rank it. Press <kbd>n</kbd> to start.</li>';
+    return;
+  }
+  cur.issues = Math.max(0, Math.min(cur.issues, S.issues.length - 1));
+
+  var html = "";
+  S.issues.forEach(function (it, i) {
+    if (i === 3) html += '<li class="cutline"><span>Below the line &mdash; not this week</span></li>';
+    var nAtt = (it.attachments || []).length + (it.links || []).length;
+    html += '<li class="issue ' + (i > 2 ? "below" : "") + " " +
+            (i === cur.issues && pane === "issues" ? "cursor" : "") + " " +
+            (it.id === benchId ? "benched" : "") + '" data-id="' + it.id + '">' +
+      '<div class="step-bullet">' + (i + 1) + "</div>" +
+      '<div class="issue-body">' +
+        '<div class="t">' + esc(it.title) + "</div>" +
+        '<div class="m">' +
+          (it.raisedBy ? "<span>" + esc(it.raisedBy) + "</span>" : "") +
+          "<span>on the list since " + it.created + "</span>" +
+          (nAtt ? '<span class="pill clip">' + nAtt + " attached</span>" : "") +
+        "</div>" +
+      "</div></li>";
+  });
+  el.innerHTML = html;
+
+  Array.prototype.forEach.call(el.querySelectorAll(".issue"), function (li) {
+    li.onclick = function () {
+      pane = "issues";
+      cur.issues = indexOfIssue(li.dataset.id);
+      benchId = li.dataset.id;
+      solving = false;
+      renderIssues();
+      renderBench();
+      $("bench").scrollIntoView({ block: "nearest", behavior: "smooth" });
+    };
+  });
+}
+
+function renderBench() {
+  var box = $("bench");
+  var it = findIssue(benchId);
+
+  if (!it) {
+    $("tallyBench").textContent = "";
+    box.innerHTML = '<div class="callout-info"><strong>Nothing on the bench</strong>' +
+      "Pick an issue from the list &mdash; start at rank 1 and work it all the way to solved before moving on. " +
+      "Once something is benched, paste an image or a link to attach it here.</div>";
+    return;
+  }
+
+  var rank = indexOfIssue(it.id) + 1;
+  $("tallyBench").textContent = "Rank " + rank;
+
+  var atts = it.attachments || [];
+  var links = it.links || [];
+
+  var html =
+    '<div class="bench-subject">' + esc(it.title) + "</div>" +
+    '<div class="bench-meta">' + (it.raisedBy ? "Raised by " + esc(it.raisedBy) + " \u00b7 " : "") +
+      "on the list since " + it.created + (rank > 3 ? " \u00b7 below the line" : "") + "</div>" +
+    '<span class="field-label">Discussion notes</span>' +
+    '<textarea id="notes" placeholder="Root cause, what was tried, what we agreed...">' + esc(it.notes || "") + "</textarea>";
+
+  if (atts.length) {
+    html += '<div class="attachments">' + atts.map(function (a) {
+      return '<button class="thumb" data-att="' + a.id + '" title="Remove attachment"><img src="' +
+             esc(imgSrc(a)) + '" alt=""><span class="x">&times;</span></button>';
+    }).join("") + "</div>";
+  }
+
+  if (links.length) {
+    html += '<div class="linkchips">' + links.map(function (l) {
+      return '<div class="linkchip"><a href="' + esc(l.url) + '" target="_blank" rel="noopener">' +
+             esc(l.label) + '</a><span class="host">' + esc(l.host) +
+             '</span><button class="x" data-link="' + l.id + '" aria-label="Remove link">&times;</button></div>';
+    }).join("") + "</div>";
+  }
+
+  if (!atts.length && !links.length) {
+    html += '<div class="bench-meta" style="margin:12px 0 0">Paste an image or a URL with <kbd>Ctrl</kbd>+<kbd>V</kbd> to attach it.</div>';
+  }
+
+  html += '<div class="solvebox" id="solvebox"></div>';
+  box.innerHTML = html;
+
+  var ta = $("notes");
+  ta.oninput = function () { it.notes = ta.value; it.updatedAt = now(); saveLocal(); dirty = true; };
+  ta.onblur = function () { if (dirty) schedulePush("Notes on: " + it.title.slice(0, 60)); };
+
+  Array.prototype.forEach.call(box.querySelectorAll("[data-att]"), function (b) {
+    b.onclick = function () {
+      it.attachments = it.attachments.filter(function (a) { return a.id !== b.dataset.att; });
+      it.updatedAt = now();
+      renderBench();
+      schedulePush("Remove attachment from: " + it.title.slice(0, 60));
+    };
+  });
+  Array.prototype.forEach.call(box.querySelectorAll("[data-link]"), function (b) {
+    b.onclick = function () {
+      it.links = it.links.filter(function (l) { return l.id !== b.dataset.link; });
+      it.updatedAt = now();
+      renderBench();
+      schedulePush("Remove link from: " + it.title.slice(0, 60));
+    };
+  });
+
+  var sb = $("solvebox");
+  if (!solving) {
+    sb.innerHTML = '<div class="row" style="margin-top:0">' +
+      '<button class="btn" id="bSolve">Solve it</button>' +
+      '<button class="btn ghost" id="bBack">Back to the list</button>' +
+      '<button class="btn ghost" id="bDrop">Drop issue</button></div>';
+    $("bSolve").onclick = function () { solving = true; renderBench(); };
+    $("bBack").onclick = function () { benchId = null; renderIssues(); renderBench(); };
+    $("bDrop").onclick = function () { dropIssue(it.id); };
+  } else {
+    sb.innerHTML =
+      '<span class="field-label">Solved &mdash; what does this leave behind?</span>' +
+      '<div class="row" style="margin-top:0"><input type="text" id="sWhat" class="grow" placeholder="The to-do this creates" maxlength="200"></div>' +
+      '<div class="row"><input type="text" id="sOwner" class="grow" placeholder="Owner" maxlength="40">' +
+      '<input type="date" id="sDue" class="short" value="' + addDays(7) + '"></div>' +
+      '<div class="row"><button class="btn" id="sClose">Close the issue</button>' +
+      '<button class="btn ghost" id="sBack">Not yet</button></div>' +
+      '<div class="bench-meta" style="margin-top:10px">Leave the to-do blank if the discussion didn\'t produce one.</div>';
+    $("sWhat").focus();
+    $("sBack").onclick = function () { solving = false; renderBench(); };
+    $("sClose").onclick = closeIssue;
+    $("sWhat").onkeydown = function (e) { if (e.key === "Enter") { e.preventDefault(); closeIssue(); } };
+    $("sOwner").onkeydown = function (e) { if (e.key === "Enter") { e.preventDefault(); closeIssue(); } };
+  }
+}
+
+function renderTodos() {
+  var el = $("todos");
+  if (!S.todos.length) {
+    el.innerHTML = '<li class="empty"><b>No to-dos yet.</b>Solved issues land here with an owner and a date. Press <kbd>t</kbd> to add one by hand.</li>';
+    return;
+  }
+  S.todos.sort(function (a, b) {
+    return (a.done === b.done ? 0 : a.done ? 1 : -1) || String(a.due).localeCompare(String(b.due));
+  });
+  cur.todos = Math.max(0, Math.min(cur.todos, S.todos.length - 1));
+
+  el.innerHTML = S.todos.map(function (t, i) {
+    var late = !t.done && t.due && t.due < today();
+    var r = t.rolls || 0;
+    return '<li class="todo ' + (t.done ? "done" : "") + " " +
+      (i === cur.todos && pane === "todos" ? "cursor" : "") + '" data-id="' + t.id + '">' +
+      '<button class="check-box" aria-label="Toggle done"></button>' +
+      '<div class="todo-body"><div class="w">' + esc(t.what) + "</div>" +
+      '<div class="m"><b>' + (t.owner ? esc(t.owner) : "unassigned") + "</b>" +
+      (r ? '<span class="roll ' + (r >= 3 ? "r3" : r === 2 ? "r2" : "") + '">rolled ' + r + "\u00d7</span>" : "") +
+      (t.from ? "<span>from: " + esc(t.from) + "</span>" : "") +
+      "</div></div>" +
+      '<span class="due ' + (late ? "late" : "") + '">' + (late ? "late " : "") + shortDate(t.due) + "</span></li>";
+  }).join("");
+
+  Array.prototype.forEach.call(el.querySelectorAll(".todo"), function (li) {
+    var id = li.dataset.id;
+    li.onclick = function () {
+      pane = "todos";
+      for (var i = 0; i < S.todos.length; i++) if (S.todos[i].id === id) cur.todos = i;
+      renderTodos();
+      renderIssues();
+    };
+    li.querySelector(".check-box").onclick = function (e) { e.stopPropagation(); toggleTodo(id); };
+  });
+}
+
+/* ══════════ ACTIONS ══════════ */
+function addIssue() {
+  var t = $("qIssue").value.trim();
+  if (!t) { $("qIssue").focus(); return; }
+  S.issues.push({
+    id: uid(), title: t, raisedBy: $("qRaiser").value.trim(),
+    notes: "", created: today(), updatedAt: now(), attachments: [], links: []
+  });
+  $("qIssue").value = "";
+  renderIssues();
+  renderMeta();
+  schedulePush("Add issue: " + t.slice(0, 70));
+  $("qIssue").focus();
+}
+
+function addTodo() {
+  var w = $("qTodo").value.trim();
+  if (!w) { $("qTodo").focus(); return; }
+  S.todos.push({
+    id: uid(), what: w, owner: $("qOwner").value.trim(),
+    due: $("qDue").value || addDays(7), done: false, rolls: 0, from: "", updatedAt: now()
+  });
+  $("qTodo").value = "";
+  $("qOwner").value = "";
+  renderTodos();
+  renderMeta();
+  schedulePush("Add to-do: " + w.slice(0, 70));
+  $("qTodo").focus();
+}
+
+function toggleTodo(id) {
+  var t = null;
+  for (var i = 0; i < S.todos.length; i++) if (S.todos[i].id === id) t = S.todos[i];
+  if (!t) return;
+  t.done = !t.done;
+  t.updatedAt = now();
+  renderTodos();
+  renderMeta();
+  schedulePush((t.done ? "Complete" : "Reopen") + " to-do: " + t.what.slice(0, 60));
+}
+
+function move(dir) {
+  var i = cur.issues, j = i + dir, tmp;
+  if (j < 0 || j >= S.issues.length) return;
+  tmp = S.issues[i]; S.issues[i] = S.issues[j]; S.issues[j] = tmp;
+  S.issues[i].updatedAt = now();
+  S.issues[j].updatedAt = now();
+  cur.issues = j;
+  renderIssues();
+  schedulePush("Re-rank: " + S.issues[j].title.slice(0, 60) + " to " + (j + 1));
+}
+
+function dropIssue(id) {
+  var it = findIssue(id);
+  if (!it) return;
+  S.issues = S.issues.filter(function (x) { return x.id !== id; });
+  if (benchId === id) { benchId = null; solving = false; }
+  renderAll();
+  schedulePush("Drop issue: " + it.title.slice(0, 60));
+}
+
+function closeIssue() {
+  var it = findIssue(benchId);
+  if (!it) return;
+  var what = $("sWhat").value.trim();
+  if (what) {
+    S.todos.push({
+      id: uid(), what: what, owner: $("sOwner").value.trim(),
+      due: $("sDue").value || addDays(7), done: false, rolls: 0,
+      from: it.title, updatedAt: now()
+    });
+  }
+  S.solved.unshift({
+    id: it.id, title: it.title, notes: it.notes || "",
+    attachments: it.attachments || [], links: it.links || [], on: today()
+  });
+  S.issues = S.issues.filter(function (x) { return x.id !== it.id; });
+  benchId = null;
+  solving = false;
+  renderAll();
+  schedulePush("Solve: " + it.title.slice(0, 70));
+  toast(what ? "Closed - to-do created" : "Issue closed");
+}
+
+function closeWeek() {
+  var stamp = monday();
+  var doneTodos = S.todos.filter(function (t) { return t.done; });
+  var openTodos = S.todos.filter(function (t) { return !t.done; });
+
+  var snapshot = {
+    week: stamp,
+    closedAt: now(),
+    solved: S.solved,
+    completedTodos: doneTodos,
+    carriedTodos: openTodos.map(function (t) {
+      return { what: t.what, owner: t.owner, due: t.due, rolls: (t.rolls || 0) + 1 };
+    }),
+    openIssues: S.issues.map(function (i, n) {
+      return { rank: n + 1, title: i.title, raisedBy: i.raisedBy };
+    })
+  };
+
+  function finish() {
+    openTodos.forEach(function (t) { t.rolls = (t.rolls || 0) + 1; t.updatedAt = now(); });
+    S.todos = openTodos;
+    S.solved = [];
+    S.closedOn = stamp;
+    if (S.weeks.indexOf(stamp) === -1) S.weeks.unshift(stamp);
+    renderAll();
+    schedulePush("Reset board after closing week " + stamp);
+    toast("Week archived - " + openTodos.length + " to-do" + (openTodos.length === 1 ? "" : "s") + " carried over");
+  }
+
+  if (!connected()) { finish(); return; }
+
+  var path = "ids/weeks/" + stamp + ".json";
+  getFile(path).catch(function () { return null; }).then(function (existing) {
+    return putFile(
+      path,
+      strToB64(JSON.stringify(snapshot, null, 2)),
+      "Close week " + stamp + " \u2014 " + S.solved.length + " solved, " +
+        doneTodos.length + " to-dos done, " + openTodos.length + " carried",
+      existing ? existing.sha : null
+    );
+  }).then(function (res) {
+    if (!res.ok) { toast("Archive commit failed (" + res.status + ")"); return; }
+    finish();
+  }).catch(function (e) { toast("Archive failed: " + e.message); });
+}
+
+function recap() {
+  var open = S.todos.filter(function (t) { return !t.done; });
+  var lines = ["R&D Issues List \u2014 " + new Date().toLocaleDateString(), "",
+    "Solved this week (" + S.solved.length + "):"];
+  S.solved.forEach(function (s) { lines.push("  - " + s.title); });
+  lines.push("", "Open to-dos (" + open.length + "):");
+  open.forEach(function (t) {
+    lines.push("  - " + t.what + " \u2014 " + (t.owner || "unassigned") + " \u2014 due " + t.due +
+      (t.rolls ? " (rolled " + t.rolls + "x)" : ""));
+  });
+  lines.push("", "Still on the list (" + S.issues.length + "):");
+  S.issues.forEach(function (i, n) { lines.push("  " + (n + 1) + ". " + i.title); });
+
+  var text = lines.join("\n");
+  navigator.clipboard.writeText(text)
+    .then(function () { toast("Recap copied to clipboard"); })
+    .catch(function () { console.log(text); toast("Clipboard blocked - recap printed to the console"); });
+}
+
+/* ══════════ KEYBOARD ══════════ */
+function typing() {
+  var a = document.activeElement;
+  return !!(a && (a.tagName === "INPUT" || a.tagName === "TEXTAREA"));
+}
+function modalOpen() { return !!document.querySelector(".scrim.open"); }
+
+document.addEventListener("keydown", function (e) {
+  if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === "s") {
+    e.preventDefault();
+    clearTimeout(pushTimer);
+    push("Manual commit");
+    return;
+  }
+  if (e.key === "Escape") {
+    if (modalOpen()) { closeModals(); return; }
+    if (typing()) { document.activeElement.blur(); return; }
+    if (benchId) { benchId = null; solving = false; renderIssues(); renderBench(); }
+    return;
+  }
+  if (typing() || modalOpen()) return;
+
+  var k = e.key;
+
+  if (k === "?") { e.preventDefault(); openModal("keysScrim"); return; }
+  if (k === "n") { e.preventDefault(); $("qIssue").focus(); return; }
+  if (k === "t") { e.preventDefault(); $("qTodo").focus(); return; }
+  if (k === "Tab") {
+    e.preventDefault();
+    pane = pane === "issues" ? "todos" : "issues";
+    renderIssues(); renderTodos();
+    return;
+  }
+  if (k === "s") {
+    e.preventDefault();
+    if (!benchId) { toast("Nothing on the bench"); return; }
+    solving = true;
+    renderBench();
+    return;
+  }
+
+  if (pane === "issues") {
+    if (k === "j" || k === "ArrowDown") { e.preventDefault(); cur.issues = Math.min(cur.issues + 1, S.issues.length - 1); renderIssues(); return; }
+    if (k === "k" || k === "ArrowUp")   { e.preventDefault(); cur.issues = Math.max(cur.issues - 1, 0); renderIssues(); return; }
+    if (k === "J") { e.preventDefault(); move(1); return; }
+    if (k === "K") { e.preventDefault(); move(-1); return; }
+    if (k === "Enter") {
+      e.preventDefault();
+      var it = S.issues[cur.issues];
+      if (it) { benchId = it.id; solving = false; renderIssues(); renderBench(); }
+      return;
+    }
+    if (k === "d") {
+      e.preventDefault();
+      var di = S.issues[cur.issues];
+      if (di) dropIssue(di.id);
+      return;
+    }
+  } else {
+    if (k === "j" || k === "ArrowDown") { e.preventDefault(); cur.todos = Math.min(cur.todos + 1, S.todos.length - 1); renderTodos(); return; }
+    if (k === "k" || k === "ArrowUp")   { e.preventDefault(); cur.todos = Math.max(cur.todos - 1, 0); renderTodos(); return; }
+    if (k === " ") {
+      e.preventDefault();
+      var t = S.todos[cur.todos];
+      if (t) toggleTodo(t.id);
+      return;
+    }
+    if (k === "d") {
+      e.preventDefault();
+      var dt = S.todos[cur.todos];
+      if (dt) {
+        S.todos = S.todos.filter(function (x) { return x.id !== dt.id; });
+        renderTodos(); renderMeta();
+        schedulePush("Remove to-do: " + dt.what.slice(0, 60));
+      }
+      return;
+    }
+  }
+});
+
+/* ══════════ PASTE / DROP ══════════ */
+document.addEventListener("paste", function (e) {
+  var items = e.clipboardData ? e.clipboardData.items : null;
+  if (!items) return;
+
+  for (var i = 0; i < items.length; i++) {
+    if (items[i].type && items[i].type.indexOf("image/") === 0) {
+      e.preventDefault();
+      var f = items[i].getAsFile();
+      if (f) attachImage(f);
+      return;
+    }
+  }
+
+  if (typing()) return;
+  var text = (e.clipboardData.getData("text") || "").trim();
+  if (/^https?:\/\/\S+$/i.test(text)) {
+    e.preventDefault();
+    attachLink(text);
+  }
+});
+
+document.addEventListener("dragover", function (e) { e.preventDefault(); });
+document.addEventListener("drop", function (e) {
+  e.preventDefault();
+  var f = e.dataTransfer && e.dataTransfer.files[0];
+  if (f && f.type.indexOf("image/") === 0) attachImage(f);
+});
+
+/* ══════════ MODALS + CONFIG ══════════ */
+function openModal(id) { $(id).classList.add("open"); }
+function closeModals() {
+  Array.prototype.forEach.call(document.querySelectorAll(".scrim"), function (s) { s.classList.remove("open"); });
+}
+
+Array.prototype.forEach.call(document.querySelectorAll("[data-close]"), function (b) { b.onclick = closeModals; });
+Array.prototype.forEach.call(document.querySelectorAll(".scrim"), function (s) {
+  s.onclick = function (e) { if (e.target === s) closeModals(); };
+});
+
+$("keysBtn").onclick = function () { openModal("keysScrim"); };
+$("cfgBtn").onclick = function () {
+  $("cOwner").value = CFG.owner;
+  $("cRepo").value = CFG.repo;
+  $("cBranch").value = CFG.branch;
+  $("cPath").value = CFG.path;
+  $("cToken").value = CFG.token;
+  $("cPrivate").checked = !!CFG.private;
+  $("cResult").innerHTML = "";
+  openModal("cfgScrim");
+};
+
+function readCfg() {
+  return {
+    owner: $("cOwner").value.trim(),
+    repo: $("cRepo").value.trim(),
+    branch: $("cBranch").value.trim() || "main",
+    path: $("cPath").value.trim() || "ids/board.json",
+    token: $("cToken").value.trim(),
+    private: $("cPrivate").checked
+  };
+}
+
+$("cTest").onclick = function () {
+  var saved = CFG;
+  CFG = readCfg();
+  $("cResult").innerHTML = '<div class="callout-info"><strong>Checking...</strong>Contacting GitHub.</div>';
+  gh("/repos/" + CFG.owner + "/" + CFG.repo).then(function (res) {
+    if (res.status === 401) throw new Error("The token was rejected. Check that it hasn't expired.");
+    if (res.status === 404) throw new Error("Repo not found, or the token doesn't have access to it.");
+    if (!res.ok) throw new Error("GitHub returned " + res.status + ".");
+    return res.json();
+  }).then(function (d) {
+    if (!d.permissions || !d.permissions.push) {
+      throw new Error("The token can read this repo but not write to it. Add Contents: read and write.");
+    }
+    $("cResult").innerHTML = '<div class="callout-ok"><strong>Connected</strong>' + esc(d.full_name) +
+      " on branch " + esc(CFG.branch) + (d.private ? " (private)" : " (public)") +
+      ". Save to start committing.</div>";
+  }).catch(function (err) {
+    $("cResult").innerHTML = '<div class="callout-danger"><strong>Couldn\'t connect</strong>' + esc(err.message) + "</div>";
+    CFG = saved;
+  });
+};
+
+$("cSave").onclick = function () {
+  CFG = readCfg();
+  if (!CFG.owner || !CFG.repo || !CFG.token) {
+    $("cResult").innerHTML = '<div class="callout-warn"><strong>Missing fields</strong>Owner, repository and token are all required.</div>';
+    return;
+  }
+  localStorage.setItem(LS_CFG, JSON.stringify(CFG));
+  $("archiveWarn").innerHTML = "";
+  closeModals();
+  pull().then(function () {
+    loadCommits();
+    toast("Connected to " + CFG.owner + "/" + CFG.repo);
+  });
+};
+
+$("cForget").onclick = function () {
+  localStorage.removeItem(LS_CFG);
+  CFG = { owner: "", repo: "", branch: "main", path: "ids/board.json", token: "", private: false };
+  sha = null;
+  setSync("local", "Local only");
+  closeModals();
+  toast("Disconnected - the board is local to this browser now");
+};
+
+$("pullBtn").onclick = function () { pull(); };
+$("closeWeek").onclick = closeWeek;
+$("recapBtn").onclick = recap;
+$("addIssue").onclick = addIssue;
+$("addTodo").onclick = addTodo;
+
+["qIssue", "qRaiser"].forEach(function (id) {
+  $(id).addEventListener("keydown", function (e) { if (e.key === "Enter") addIssue(); });
+});
+["qTodo", "qOwner"].forEach(function (id) {
+  $(id).addEventListener("keydown", function (e) { if (e.key === "Enter") addTodo(); });
+});
+
+window.addEventListener("beforeunload", function (e) {
+  if (dirty && connected()) { e.preventDefault(); e.returnValue = ""; }
+});
+
+/* ══════════ BOOT ══════════ */
+(function boot() {
+  loadLocal();
+  $("qDue").value = addDays(7);
+
+  if (!connected()) {
+    $("archiveWarn").innerHTML = '<div class="callout-warn"><strong>No repository connected</strong>' +
+      "The board is saved to this browser only. Open <strong>Repo</strong> in the header to point it at a GitHub repo &mdash; " +
+      "then every change becomes a commit and the whole team shares one list.</div>";
+  }
+
+  renderAll();
+
+  if (connected()) {
+    pull(true).then(loadCommits);
+    setInterval(function () { if (!dirty && !pushing) pull(true); }, 90000);
+  }
+})();
+</script>
+</body>
+</html>
