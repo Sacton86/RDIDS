@@ -1,7 +1,16 @@
 {
   "week": "2026-08-24",
-  "closedAt": "2026-08-26T19:51:31.225Z",
-  "solved": [],
+  "closedAt": "2026-08-26T19:53:49.113Z",
+  "solved": [
+    {
+      "id": "mtaic14mbf8xr",
+      "title": "Samsung",
+      "notes": "This is a test for samsung",
+      "attachments": [],
+      "links": [],
+      "on": "2026-08-26"
+    }
+  ],
   "completedTodos": [
     {
       "id": "mtaiekuztjbfv",
@@ -11,14 +20,21 @@
       "done": true,
       "rolls": 0,
       "from": "",
-      "updatedAt": "2026-08-26T19:51:15.379Z"
+      "updatedAt": "2026-08-26T19:53:46.861Z"
     }
   ],
-  "carriedTodos": [],
+  "carriedTodos": [
+    {
+      "what": "Follow up with Tyler about emailing todos",
+      "owner": "SA",
+      "due": "2026-09-02",
+      "rolls": 1
+    }
+  ],
   "openIssues": [
     {
       "rank": 1,
-      "title": "Samsung",
+      "title": "Emailing to do's",
       "raisedBy": "Tyler"
     }
   ]
