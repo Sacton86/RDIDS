@@ -17,10 +17,10 @@
       "what": "Tyler has a to do",
       "owner": "tyler",
       "due": "2026-09-02",
-      "done": false,
+      "done": true,
       "rolls": 0,
       "from": "",
-      "updatedAt": "2026-08-26T19:51:12.923Z"
+      "updatedAt": "2026-08-26T19:51:15.379Z"
     }
   ],
   "solved": [],
