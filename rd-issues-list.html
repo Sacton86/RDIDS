@@ -1573,16 +1573,6 @@ Array.prototype.forEach.call(document.querySelectorAll(".scrim"), function (s) {
 });
 
 $("keysBtn").onclick = function () { openModal("keysScrim"); };
-$("cfgBtn").onclick = function () {
-  $("cOwner").value = CFG.owner;
-  $("cRepo").value = CFG.repo;
-  $("cBranch").value = CFG.branch;
-  $("cPath").value = CFG.path;
-  $("cToken").value = CFG.token;
-  $("cPrivate").checked = !!CFG.private;
-  $("cResult").innerHTML = "";
-  openModal("cfgScrim");
-};
 
 function readCfg() {
   return {
