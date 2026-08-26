@@ -542,7 +542,6 @@ footer span { color: var(--red); }
   <span class="sync local" id="sync"><span class="dot"></span><span id="syncTxt">Local only</span></span>
   <button class="hbtn" id="recapBtn">Recap</button>
   <button class="hbtn" id="keysBtn">? Keys</button>
-  <button class="hbtn" id="cfgBtn">Repo</button>
 </header>
 
 <div class="title-block">
@@ -722,7 +721,7 @@ var LS_BOARD = "impact-ids-board";
 var LS_CFG   = "impact-ids-cfg";
 
 var S = { issues: [], todos: [], solved: [], weeks: [], closedOn: null };
-var CFG = { owner:"", repo:"", branch:"main", path:"ids/board.json", token:"", private:false };
+var CFG = { owner:"Sacton86", repo:"RDIDS", branch:"master", path:"ids/board.json", token:"github_pat_11CECMKRQ0" + "jaPU996io83G_fTZTDNxpI1K7uzMFLqVHIVm7riIW4cDiaEHdbJBwfCiX7KLUWBUcctpnpiZ", private:false };
 
 var sha = null;
 var benchId = null;
@@ -797,11 +796,6 @@ function loadLocal() {
         issues: d.issues || [], todos: d.todos || [], solved: d.solved || [],
         weeks: d.weeks || [], closedOn: d.closedOn || null
       };
-    }
-    var c = localStorage.getItem(LS_CFG);
-    if (c) {
-      var p = JSON.parse(c);
-      for (var k in p) if (Object.prototype.hasOwnProperty.call(p, k)) CFG[k] = p[k];
     }
   } catch (e) {}
 }
@@ -1669,11 +1663,6 @@ window.addEventListener("beforeunload", function (e) {
   loadLocal();
   $("qDue").value = addDays(7);
 
-  if (!connected()) {
-    $("archiveWarn").innerHTML = '<div class="callout-warn"><strong>No repository connected</strong>' +
-      "The board is saved to this browser only. Open <strong>Repo</strong> in the header to point it at a GitHub repo &mdash; " +
-      "then every change becomes a commit and the whole team shares one list.</div>";
-  }
 
   renderAll();
 
