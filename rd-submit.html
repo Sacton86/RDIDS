@@ -1,0 +1,451 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>R&amp;D — Submit an Issue</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --black:    #0a0a0a;
+  --red:      #cc1111;
+  --white:    #ffffff;
+  --gray-100: #f4f4f4;
+  --gray-200: #e2e2e2;
+  --gray-500: #888888;
+  --gray-700: #444444;
+  --amber:    #f0a500;
+  --green:    #28a745;
+}
+
+body {
+  font-family: 'Inter', sans-serif;
+  background: var(--gray-100);
+  color: var(--gray-700);
+  line-height: 1.7;
+  font-size: 15px;
+}
+button, input, textarea { font-family: inherit; font-size: inherit; color: inherit; }
+button { cursor: pointer; border: none; background: none; }
+:focus-visible { outline: 2px solid var(--red); outline-offset: 2px; }
+
+/* ── HEADER ── */
+header {
+  background: var(--black);
+  padding: 24px 48px;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+header img { height: 44px; }
+.header-badge {
+  background: var(--red);
+  color: var(--white);
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+  padding: 5px 13px;
+  border-radius: 4px;
+}
+
+/* ── TITLE BLOCK ── */
+.title-block {
+  background: linear-gradient(135deg, #111 0%, #1f1f1f 60%, #2a0404 100%);
+  color: var(--white);
+  padding: 40px 48px 34px;
+  border-bottom: 4px solid var(--red);
+}
+.sop-label {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: .14em;
+  text-transform: uppercase;
+  color: var(--red);
+  margin-bottom: 10px;
+}
+.title-block h1 {
+  font-size: 1.9rem;
+  font-weight: 700;
+  line-height: 1.2;
+  color: var(--white);
+}
+.title-block h1 span { color: var(--red); }
+
+/* ── LAYOUT ── */
+main { max-width: 720px; margin: 0 auto; padding: 34px 24px 60px; }
+
+.sop-section {
+  background: var(--white);
+  border: 1px solid var(--gray-200);
+  border-radius: 8px;
+  overflow: hidden;
+}
+.sop-section-header {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 18px 28px;
+  border-bottom: 1px solid var(--gray-200);
+  background: #fbfbfb;
+}
+.section-num {
+  width: 26px; height: 26px;
+  flex-shrink: 0;
+  border-radius: 50%;
+  background: var(--red);
+  color: var(--white);
+  font-size: 12px;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.sop-section-header h2 { font-size: 1rem; font-weight: 600; color: var(--black); }
+.sop-section-body { padding: 26px 28px; }
+
+/* ── FIELDS ── */
+.field-label {
+  font-size: 11px; font-weight: 700;
+  letter-spacing: .08em; text-transform: uppercase;
+  color: var(--gray-500);
+  margin-bottom: 8px;
+  display: block;
+}
+.fld { margin-bottom: 22px; }
+.fld input, .fld textarea {
+  width: 100%;
+  border: 1px solid var(--gray-200);
+  border-radius: 6px;
+  padding: 10px 12px;
+  font-size: .9rem;
+  line-height: 1.6;
+  background: var(--white);
+}
+.fld textarea { min-height: 170px; resize: vertical; }
+.fld input:focus, .fld textarea:focus { outline: none; border-color: var(--red); }
+.fld .hint { font-size: 12px; color: var(--gray-500); margin-top: 5px; }
+.fld .hint.count { float: right; font-variant-numeric: tabular-nums; }
+.honey { position: absolute; left: -9999px; width: 1px; height: 1px; overflow: hidden; }
+
+.btn {
+  background: var(--red);
+  color: var(--white);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+  padding: 11px 22px;
+  border-radius: 6px;
+  white-space: nowrap;
+}
+.btn:hover { background: #a80d0d; }
+.btn[disabled] { background: var(--gray-500); cursor: default; }
+.btn.ghost {
+  background: var(--white);
+  color: var(--gray-700);
+  border: 1px solid var(--gray-200);
+}
+.btn.ghost:hover { background: var(--gray-100); color: var(--black); }
+.row { display: flex; gap: 12px; align-items: center; flex-wrap: wrap; }
+
+/* ── CALLOUTS ── */
+.callout-warn   { background: #fff8e1; border-left: 4px solid var(--amber); border-radius: 0 6px 6px 0; padding: 14px 18px; margin: 16px 0; font-size: .88rem; color: #5a4000; }
+.callout-warn strong   { color: #3a2800; display: block; margin-bottom: 2px; }
+.callout-info   { background: #e8f0fe; border-left: 4px solid #1a56a0; border-radius: 0 6px 6px 0; padding: 14px 18px; margin: 16px 0; font-size: .88rem; color: #1a3060; }
+.callout-info strong   { color: #0f1f40; display: block; margin-bottom: 2px; }
+.callout-danger { background: #fdecea; border-left: 4px solid var(--red); border-radius: 0 6px 6px 0; padding: 14px 18px; margin: 16px 0; font-size: .88rem; color: #7a1010; }
+.callout-danger strong { color: #4a0808; display: block; margin-bottom: 2px; }
+.callout-ok     { background: #e6f9ec; border-left: 4px solid var(--green); border-radius: 0 6px 6px 0; padding: 14px 18px; margin: 16px 0; font-size: .88rem; color: #1a4a2a; }
+.callout-ok strong     { color: #0f2e19; display: block; margin-bottom: 2px; }
+.callout-warn:first-child, .callout-info:first-child, .callout-danger:first-child, .callout-ok:first-child { margin-top: 0; }
+.callout-danger a, .callout-warn a { color: inherit; font-weight: 600; }
+
+/* ── DONE STATE ── */
+.done-mark {
+  width: 54px; height: 54px;
+  border-radius: 50%;
+  background: var(--green);
+  color: var(--white);
+  font-size: 27px;
+  font-weight: 700;
+  display: flex; align-items: center; justify-content: center;
+  margin: 0 auto 18px;
+}
+.done { text-align: center; padding: 14px 0 6px; }
+.done h3 { font-size: 1.15rem; font-weight: 700; color: var(--black); margin-bottom: 6px; }
+.done p { font-size: .9rem; color: var(--gray-500); max-width: 420px; margin: 0 auto 22px; }
+.done .row { justify-content: center; }
+
+.hidden { display: none; }
+
+/* ── TOAST ── */
+.toast {
+  position: fixed; left: 50%; bottom: 28px; transform: translateX(-50%);
+  background: var(--black); color: var(--white);
+  padding: 12px 22px; border-radius: 6px;
+  font-size: .85rem; font-weight: 500;
+  border-left: 3px solid var(--red);
+  opacity: 0; pointer-events: none; transition: opacity .18s;
+  z-index: 200; max-width: 90vw;
+}
+.toast.show { opacity: 1; }
+
+/* ── FOOTER ── */
+footer { background: var(--black); color: #555; text-align: center; padding: 24px; font-size: .78rem; }
+footer span { color: var(--red); }
+
+@media (max-width: 640px) {
+  header, .title-block { padding-left: 20px; padding-right: 20px; }
+  .title-block { padding-top: 30px; }
+  .sop-section-header, .sop-section-body { padding-left: 20px; padding-right: 20px; }
+}
+</style>
+</head>
+<body>
+
+<header>
+  <img src="https://i.imgur.com/8Lz8tfU.png" alt="Impact LED Signs" />
+  <span class="header-badge">R&amp;D — Submit an Issue</span>
+</header>
+
+<div class="title-block">
+  <div class="sop-label">Research &amp; Development</div>
+  <h1>Submit an <span>Issue</span></h1>
+</div>
+
+<main>
+  <div class="sop-section">
+    <div class="sop-section-header">
+      <div class="section-num">1</div>
+      <h2>Tell us what's wrong</h2>
+    </div>
+
+    <div class="sop-section-body">
+
+      <div id="formWrap">
+        <div class="fld">
+          <span class="field-label">Your name</span>
+          <input type="text" id="fName" maxlength="60" autocomplete="name" spellcheck="false" placeholder="Who's raising this?">
+        </div>
+
+        <div class="fld">
+          <span class="field-label">The issue <span class="hint count" id="count">0 / 1200</span></span>
+          <textarea id="fIssue" maxlength="1200" placeholder="What's happening, where, and what have you already tried?"></textarea>
+          <div class="hint">First line becomes the headline on the issues list &mdash; keep it short, then add detail below it.</div>
+        </div>
+
+        <!-- Spam trap: real people never see or fill this. -->
+        <div class="honey" aria-hidden="true">
+          <label>Leave this blank<input type="text" id="fHoney" tabindex="-1" autocomplete="off"></label>
+        </div>
+
+        <div id="result"></div>
+
+        <div class="row">
+          <button class="btn" id="submitBtn">Submit issue</button>
+          <span class="hint" id="status"></span>
+        </div>
+      </div>
+
+      <div id="doneWrap" class="hidden">
+        <div class="done">
+          <div class="done-mark">&check;</div>
+          <h3>Got it &mdash; thanks.</h3>
+          <p id="doneMsg">Your issue is on its way to Sam and will be added to the R&amp;D issues list.</p>
+          <div class="row">
+            <button class="btn ghost" id="againBtn">Submit another</button>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</main>
+
+<footer>
+  <p>Impact LED Signs &nbsp;&middot;&nbsp; <span>Internal Use Only &mdash; R&amp;D Issue Submission</span> &nbsp;&middot;&nbsp; v1.0.0</p>
+</footer>
+
+<div class="toast" id="toast"></div>
+
+<script>
+/* ══════════ CONFIG ══════════
+   No GitHub token lives in this page on purpose. This page only sends email.
+   The email Sam receives carries a one-click link that adds the issue to the
+   IDS list; that link is opened on Sam's machine, where the token already is. */
+var MAIL_TO   = "Sam@impactledsigns.com";
+var MAIL_URL  = "https://formsubmit.co/ajax/" + MAIL_TO;
+var LIST_URL  = "https://sacton86.github.io/RDIDS/rd-issues-list.html";
+
+function $(id) { return document.getElementById(id); }
+function uid() { return Date.now().toString(36) + Math.random().toString(36).slice(2, 7); }
+function now() { return new Date().toISOString(); }
+function esc(s) {
+  return String(s == null ? "" : s).replace(/[&<>"']/g, function (c) {
+    return { "&":"&amp;", "<":"&lt;", ">":"&gt;", '"':"&quot;", "'":"&#39;" }[c];
+  });
+}
+
+function toast(msg) {
+  var t = $("toast");
+  t.textContent = msg;
+  t.classList.add("show");
+  clearTimeout(t._t);
+  t._t = setTimeout(function () { t.classList.remove("show"); }, 2400);
+}
+
+/* base64url so the payload survives a URL fragment intact */
+function b64encode(bytes) {
+  var bin = "";
+  for (var i = 0; i < bytes.length; i++) bin += String.fromCharCode(bytes[i]);
+  return btoa(bin);
+}
+function toB64Url(s) {
+  return b64encode(new TextEncoder().encode(s))
+    .replace(/\+/g, "-").replace(/\//g, "_").replace(/=+$/, "");
+}
+
+/* The headline the issues list will show, and the body that sits under it. */
+function headline(text) {
+  var first = text.split("\n")[0].trim();
+  if (!first) first = text.trim();
+  return first.length > 200 ? first.slice(0, 197).trim() + "..." : first;
+}
+
+function addToListUrl(sub) {
+  return LIST_URL + "#add=" + toB64Url(JSON.stringify(sub));
+}
+
+/* ══════════ STATE ══════════ */
+var sending = false;
+
+function setResult(html) { $("result").innerHTML = html || ""; }
+
+function showDone(msg) {
+  $("doneMsg").textContent = msg;
+  $("formWrap").classList.add("hidden");
+  $("doneWrap").classList.remove("hidden");
+  window.scrollTo(0, 0);
+}
+
+function reset() {
+  $("fIssue").value = "";
+  $("count").textContent = "0 / 1200";
+  setResult("");
+  $("status").textContent = "";
+  $("doneWrap").classList.add("hidden");
+  $("formWrap").classList.remove("hidden");
+  $("fIssue").focus();
+}
+
+/* Plain-text body used for the mailto fallback when the network is down. */
+function mailtoFallback(sub) {
+  var body =
+    "Raised by: " + sub.n + "\n" +
+    "Submitted: " + new Date(sub.d).toLocaleString() + "\n\n" +
+    sub.t + "\n\n" +
+    "-- Add to the IDS list --\n" + addToListUrl(sub) + "\n";
+  return "mailto:" + MAIL_TO +
+    "?subject=" + encodeURIComponent("R&D Issue from " + sub.n) +
+    "&body=" + encodeURIComponent(body);
+}
+
+/* ══════════ SUBMIT ══════════ */
+function submit() {
+  if (sending) return;
+
+  var name  = $("fName").value.trim();
+  var issue = $("fIssue").value.trim();
+
+  if (!name)  { setResult('<div class="callout-warn"><strong>Name is missing</strong>We need to know who to come back to with questions.</div>'); $("fName").focus(); return; }
+  if (!issue) { setResult('<div class="callout-warn"><strong>Nothing to submit</strong>Describe the issue before sending it over.</div>'); $("fIssue").focus(); return; }
+  if ($("fHoney").value) { showDone("Thanks."); return; }
+
+  var sub = { i: uid(), n: name, t: issue, d: now() };
+
+  setResult("");
+  sending = true;
+  $("submitBtn").disabled = true;
+  $("status").textContent = "Sending...";
+
+  var payload = {
+    "_subject":  "R&D Issue from " + name,
+    "_template": "table",
+    "_captcha":  "false",
+    "Raised by": name,
+    "Issue":     issue,
+    "Submitted": new Date(sub.d).toLocaleString(),
+    "Add to the IDS list": addToListUrl(sub)
+  };
+
+  fetch(MAIL_URL, {
+    method: "POST",
+    headers: { "Content-Type": "application/json", "Accept": "application/json" },
+    body: JSON.stringify(payload)
+  })
+    .then(function (res) {
+      return res.json().catch(function () { return null; }).then(function (data) {
+        if (!res.ok || !data || String(data.success) !== "true") {
+          throw new Error((data && data.message) || ("Mail service returned " + res.status));
+        }
+        return data;
+      });
+    })
+    .then(function () {
+      showDone("Your issue is on its way to Sam and will be added to the R&D issues list.");
+      $("fIssue").value = "";
+      $("count").textContent = "0 / 1200";
+      toast("Issue submitted");
+    })
+    .catch(function (err) {
+      setResult(
+        '<div class="callout-danger"><strong>That didn\'t send</strong>' +
+        esc(err.message) +
+        '<br><a href="' + esc(mailtoFallback(sub)) + '">Send it by email instead</a>' +
+        ' &mdash; your text is still in the box, nothing was lost.</div>'
+      );
+    })
+    .then(function () {
+      sending = false;
+      $("submitBtn").disabled = false;
+      $("status").textContent = "";
+    });
+}
+
+/* ══════════ WIRING ══════════ */
+$("submitBtn").onclick = submit;
+$("againBtn").onclick = reset;
+
+$("fIssue").addEventListener("input", function () {
+  $("count").textContent = this.value.length + " / 1200";
+});
+
+/* Enter moves on from the name field; Ctrl/Cmd+Enter sends from the textarea. */
+$("fName").addEventListener("keydown", function (e) {
+  if (e.key === "Enter") { e.preventDefault(); $("fIssue").focus(); }
+});
+$("fIssue").addEventListener("keydown", function (e) {
+  if (e.key === "Enter" && (e.ctrlKey || e.metaKey)) { e.preventDefault(); submit(); }
+});
+
+/* Remember the submitter's name so repeat visits only need the issue. */
+(function boot() {
+  try {
+    var saved = localStorage.getItem("impact-ids-submitter");
+    if (saved) $("fName").value = saved;
+  } catch (e) {}
+
+  $("fName").addEventListener("change", function () {
+    try { localStorage.setItem("impact-ids-submitter", this.value.trim()); } catch (e) {}
+  });
+
+  ($("fName").value ? $("fIssue") : $("fName")).focus();
+})();
+</script>
+</body>
+</html>

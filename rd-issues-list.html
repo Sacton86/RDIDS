@@ -502,6 +502,36 @@ kbd {
 }
 .divider { border: none; border-top: 1px solid var(--gray-200); margin: 20px 0; }
 
+/* ── INBOX BAR ── */
+.import-bar {
+  display: none;
+  background: #fff8e1;
+  border-bottom: 1px solid #ecdba4;
+  padding: 20px 48px;
+}
+.import-bar.show { display: block; }
+.import-bar .kicker {
+  font-size: 11px; font-weight: 700;
+  letter-spacing: .12em; text-transform: uppercase;
+  color: #8a6100;
+  margin-bottom: 8px;
+}
+.import-bar .who { font-size: .82rem; color: #7a5a10; margin-bottom: 10px; }
+.import-bar .who strong { color: #3a2800; }
+.import-bar .what {
+  font-size: .95rem;
+  color: #3a2800;
+  background: var(--white);
+  border: 1px solid #ecdba4;
+  border-radius: 6px;
+  padding: 12px 16px;
+  margin-bottom: 16px;
+  white-space: pre-wrap;
+  max-height: 220px;
+  overflow-y: auto;
+}
+.import-bar .row { display: flex; gap: 12px; flex-wrap: wrap; align-items: center; }
+
 /* ── TOAST ── */
 .toast {
   position: fixed; left: 50%; bottom: 28px; transform: translateX(-50%);
@@ -526,7 +556,7 @@ footer span { color: var(--red); }
 }
 @media print {
   body { background: #fff; font-size: 13px; }
-  header, footer, .addbar, .btn, .hbtn, .sync { display: none; }
+  header, footer, .addbar, .btn, .hbtn, .sync, .import-bar { display: none !important; }
   main { display: block; max-width: 100%; padding: 0; }
   .sop-section { box-shadow: none; page-break-inside: avoid; }
 }
@@ -553,6 +583,16 @@ footer span { color: var(--red); }
     <div class="doc-meta-item"><strong id="mTodos">0</strong>Open to-dos</div>
     <div class="doc-meta-item"><strong id="mLate" class="hot">0</strong>Past due</div>
     <div class="doc-meta-item"><strong id="mSync">Never</strong>Last commit</div>
+  </div>
+</div>
+
+<div class="import-bar" id="importBar">
+  <div class="kicker">Submitted issue</div>
+  <div class="who" id="importWho"></div>
+  <div class="what" id="importWhat"></div>
+  <div class="row">
+    <button class="btn" id="importAdd">Add to the issues list</button>
+    <button class="btn ghost" id="importSkip">Discard</button>
   </div>
 </div>
 
@@ -1648,11 +1688,116 @@ window.addEventListener("beforeunload", function (e) {
   if (dirty && connected()) { e.preventDefault(); e.returnValue = ""; }
 });
 
+/* ══════════ SUBMITTED ISSUES ══════════
+   rd-submit.html emails Sam a link ending in #add=<base64url json>. The payload
+   never touches a server - a fragment stays in the browser - so opening the link
+   here is what pulls the submission onto the board. */
+var LS_IMPORTED = "impact-ids-imported";
+var incoming = null;
+
+function importedIds() {
+  try { return JSON.parse(localStorage.getItem(LS_IMPORTED)) || []; }
+  catch (e) { return []; }
+}
+function markImported(id) {
+  var seen = importedIds();
+  if (seen.indexOf(id) === -1) seen.push(id);
+  try { localStorage.setItem(LS_IMPORTED, JSON.stringify(seen.slice(-500))); } catch (e) {}
+}
+
+function fromB64Url(s) {
+  var b = s.replace(/-/g, "+").replace(/_/g, "/");
+  while (b.length % 4) b += "=";
+  return b64ToStr(b);
+}
+
+/* First line is the headline; the rest becomes the opening discussion note. */
+function importHeadline(text) {
+  var t = String(text || "").trim();
+  var first = t.split("\n")[0].trim() || t;
+  return first.length > 200 ? first.slice(0, 197).trim() + "..." : first;
+}
+function importNotes(sub) {
+  var full = String(sub.t || "").trim();
+  var out = [];
+  if (full && full !== importHeadline(full)) out.push(full);
+  out.push("- Submitted by " + sub.n +
+           (sub.d ? " on " + new Date(sub.d).toLocaleString() : "") +
+           " via the submission form.");
+  return out.join("\n\n");
+}
+
+function readIncoming() {
+  var m = /[#&]add=([A-Za-z0-9\-_]+)/.exec(location.hash || "");
+  if (!m) return null;
+
+  var sub;
+  try { sub = JSON.parse(fromB64Url(m[1])); }
+  catch (e) { toast("That submission link is damaged"); return null; }
+
+  if (!sub || !sub.t || !String(sub.t).trim()) return null;
+  sub.i = sub.i || "sub-" + strToB64(String(sub.t)).slice(0, 24);
+  sub.n = String(sub.n || "").trim() || "Unattributed";
+  return sub;
+}
+
+function renderImport() {
+  var bar = $("importBar");
+  if (!incoming) { bar.classList.remove("show"); return; }
+  $("importWho").innerHTML = "Raised by <strong>" + esc(incoming.n) + "</strong>" +
+    (incoming.d ? " &middot; " + esc(new Date(incoming.d).toLocaleString()) : "");
+  $("importWhat").textContent = String(incoming.t).trim();
+  bar.classList.add("show");
+}
+
+function clearImport() {
+  incoming = null;
+  renderImport();
+  history.replaceState(null, "", location.pathname + location.search);
+}
+
+function acceptImport() {
+  if (!incoming) return;
+  var sub = incoming;
+
+  S.issues.push({
+    id: uid(),
+    title: importHeadline(sub.t),
+    raisedBy: sub.n,
+    notes: importNotes(sub),
+    created: today(),
+    updatedAt: now(),
+    attachments: [],
+    links: []
+  });
+
+  markImported(sub.i);
+  clearImport();
+  renderIssues();
+  renderMeta();
+  schedulePush("Add submitted issue from " + sub.n + ": " + importHeadline(sub.t).slice(0, 60));
+  toast("Added " + sub.n + "'s issue to the list");
+}
+
+$("importAdd").onclick = acceptImport;
+$("importSkip").onclick = function () {
+  if (incoming) markImported(incoming.i);
+  clearImport();
+  toast("Submission discarded");
+};
+
 /* ══════════ BOOT ══════════ */
 (function boot() {
   loadLocal();
   $("qDue").value = addDays(7);
 
+  incoming = readIncoming();
+  if (incoming && importedIds().indexOf(incoming.i) !== -1) {
+    incoming = null;
+    history.replaceState(null, "", location.pathname + location.search);
+    toast("That issue was already handled");
+  }
+  renderImport();
 
   renderAll();
 
