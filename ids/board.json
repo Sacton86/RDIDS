@@ -1,16 +1,6 @@
 {
   "issues": [
     {
-      "id": "mtaigf1p9v42o",
-      "title": "Emailing to do's",
-      "raisedBy": "Tyler",
-      "notes": "auto send a list of to do's from the ids page, this can be completed.  ",
-      "created": "2026-08-26",
-      "updatedAt": "2026-09-10T20:54:42.757Z",
-      "attachments": [],
-      "links": []
-    },
-    {
       "id": "mtuhz4ovlqi1h",
       "title": "Weight Testing",
       "raisedBy": "Sam",
@@ -31,9 +21,27 @@
       "rolls": 1,
       "from": "",
       "updatedAt": "2026-08-26T19:53:49.945Z"
+    },
+    {
+      "id": "mtw0aq1inm34l",
+      "what": "Add emailing to closing out the week button",
+      "owner": "Sam",
+      "due": "2026-09-17",
+      "done": false,
+      "rolls": 0,
+      "from": "Emailing to do's",
+      "updatedAt": "2026-09-10T20:55:15.798Z"
     }
   ],
   "solved": [
+    {
+      "id": "mtaigf1p9v42o",
+      "title": "Emailing to do's",
+      "notes": "auto send a list of to do's from the ids page, this can be completed.  ",
+      "attachments": [],
+      "links": [],
+      "on": "2026-09-10"
+    },
     {
       "id": "mtagtv24uizku",
       "title": "Bootsi - Current Status",
