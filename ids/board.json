@@ -1,16 +1,6 @@
 {
   "issues": [
     {
-      "id": "mtagtv24uizku",
-      "title": "Bootsi - Current Status",
-      "raisedBy": "",
-      "notes": "I would call it 80% to production.  There are some logic issues regarding advanced config, and multi card flashing, but working well for the most part.  ",
-      "created": "2026-08-26",
-      "updatedAt": "2026-08-26T19:09:32.988Z",
-      "attachments": [],
-      "links": []
-    },
-    {
       "id": "mtaigf1p9v42o",
       "title": "Emailing to do's",
       "raisedBy": "Tyler",
@@ -44,6 +34,14 @@
     }
   ],
   "solved": [
+    {
+      "id": "mtagtv24uizku",
+      "title": "Bootsi - Current Status",
+      "notes": "I would call it 80% to production.  There are some logic issues regarding advanced config, and multi card flashing, but working well for the most part.  ",
+      "attachments": [],
+      "links": [],
+      "on": "2026-09-10"
+    },
     {
       "id": "mtagulekwpfn4",
       "title": "Samsung - Current Status",
