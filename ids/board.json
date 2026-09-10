@@ -11,16 +11,6 @@
       "links": []
     },
     {
-      "id": "mtagulekwpfn4",
-      "title": "Samsung - Current Status",
-      "raisedBy": "",
-      "notes": "the daemon that is running the boot sequence seems to be malfunctioning on certain units. Intermittent.  ",
-      "created": "2026-08-26",
-      "updatedAt": "2026-08-26T19:11:06.464Z",
-      "attachments": [],
-      "links": []
-    },
-    {
       "id": "mtaigf1p9v42o",
       "title": "Emailing to do's",
       "raisedBy": "Tyler",
@@ -54,6 +44,14 @@
     }
   ],
   "solved": [
+    {
+      "id": "mtagulekwpfn4",
+      "title": "Samsung - Current Status",
+      "notes": "the daemon that is running the boot sequence seems to be malfunctioning on certain units. Intermittent.  ",
+      "attachments": [],
+      "links": [],
+      "on": "2026-09-10"
+    },
     {
       "id": "mtah4zehliy8o",
       "title": "R&D - NEW IDS!",
