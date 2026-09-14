@@ -67,10 +67,10 @@
       "what": "Follow up with Tyler about emailing todos",
       "owner": "SA",
       "due": "2026-09-02",
-      "done": true,
+      "done": false,
       "rolls": 1,
       "from": "",
-      "updatedAt": "2026-09-14T20:31:28.822Z"
+      "updatedAt": "2026-09-14T20:31:40.422Z"
     },
     {
       "id": "mtw0aq1inm34l",
