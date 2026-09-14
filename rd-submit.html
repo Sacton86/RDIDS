@@ -132,6 +132,67 @@ main { max-width: 720px; margin: 0 auto; padding: 34px 24px 60px; }
 .fld .hint.count { float: right; font-variant-numeric: tabular-nums; }
 .honey { position: absolute; left: -9999px; width: 1px; height: 1px; overflow: hidden; }
 
+/* ── ATTACHMENTS ── */
+.drop {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 3px;
+  padding: 24px 18px;
+  border: 2px dashed var(--gray-200);
+  border-radius: 8px;
+  background: #fbfbfb;
+  cursor: pointer;
+  text-align: center;
+  transition: border-color .15s, background .15s;
+}
+.drop:hover, .drop.over { border-color: var(--red); background: #fff5f5; }
+.drop input[type=file] { position: absolute; width: 1px; height: 1px; opacity: 0; pointer-events: none; }
+.drop-main { font-size: .92rem; font-weight: 600; color: var(--black); }
+.drop-sub  { font-size: 12px; color: var(--gray-500); }
+
+.filelist { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 12px; }
+.filelist:empty { margin-top: 0; }
+.fchip {
+  display: flex; align-items: center; gap: 9px;
+  background: var(--white);
+  border: 1px solid var(--gray-200);
+  border-radius: 6px;
+  padding: 7px 9px 7px 7px;
+  max-width: 100%;
+}
+.fchip img {
+  width: 34px; height: 34px;
+  border-radius: 4px;
+  object-fit: cover;
+  background: var(--gray-100);
+  flex-shrink: 0;
+}
+.fchip .doc {
+  width: 34px; height: 34px;
+  border-radius: 4px;
+  background: var(--gray-100);
+  color: var(--gray-500);
+  font-size: 9px; font-weight: 700; letter-spacing: .04em;
+  display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0;
+}
+.fchip .meta { min-width: 0; }
+.fchip .nm {
+  font-size: .82rem; font-weight: 500; color: var(--gray-700);
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+  max-width: 170px;
+}
+.fchip .sz { font-size: 11px; color: var(--gray-500); }
+.fchip .sz .cut { color: var(--green); font-weight: 600; }
+.fchip .x {
+  color: var(--gray-500); font-size: 17px; line-height: 1;
+  padding: 0 2px; flex-shrink: 0;
+}
+.fchip .x:hover { color: var(--red); }
+.sizeTally.over { color: var(--red); font-weight: 700; }
+
 .btn {
   background: var(--red);
   color: var(--white);
@@ -227,30 +288,52 @@ footer span { color: var(--red); }
 
     <div class="sop-section-body">
 
-      <div id="formWrap">
-        <div class="fld">
-          <span class="field-label">Your name</span>
-          <input type="text" id="fName" maxlength="60" autocomplete="name" spellcheck="false" placeholder="Who's raising this?">
-        </div>
+      <!-- A real multipart POST, not fetch: FormSubmit only accepts attachments
+           on the regular endpoint. _next brings the submitter back here. -->
+      <form id="fForm" method="POST" enctype="multipart/form-data" novalidate>
+        <input type="hidden" name="_subject"  id="hSubject">
+        <input type="hidden" name="_template" value="table">
+        <input type="hidden" name="_captcha"  value="false">
+        <input type="hidden" name="_next"     id="hNext">
+        <input type="hidden" name="Submitted" id="hWhen">
+        <input type="hidden" name="Add to the IDS list" id="hLink">
 
-        <div class="fld">
-          <span class="field-label">The issue <span class="hint count" id="count">0 / 1200</span></span>
-          <textarea id="fIssue" maxlength="1200" placeholder="What's happening, where, and what have you already tried?"></textarea>
-          <div class="hint">First line becomes the headline on the issues list &mdash; keep it short, then add detail below it.</div>
-        </div>
+        <div id="formWrap">
+          <div class="fld">
+            <span class="field-label">Your name</span>
+            <input type="text" name="Raised by" id="fName" maxlength="60" autocomplete="name" spellcheck="false" placeholder="Who's raising this?">
+          </div>
 
-        <!-- Spam trap: real people never see or fill this. -->
-        <div class="honey" aria-hidden="true">
-          <label>Leave this blank<input type="text" id="fHoney" tabindex="-1" autocomplete="off"></label>
-        </div>
+          <div class="fld">
+            <span class="field-label">The issue <span class="hint count" id="count">0 / 1200</span></span>
+            <textarea name="Issue" id="fIssue" maxlength="1200" placeholder="What's happening, where, and what have you already tried?"></textarea>
+            <div class="hint">First line becomes the headline on the issues list &mdash; keep it short, then add detail below it.</div>
+          </div>
 
-        <div id="result"></div>
+          <div class="fld">
+            <span class="field-label">Photos or files <span class="hint count" id="sizeTally"></span></span>
+            <label class="drop" id="drop">
+              <input type="file" name="attachment" id="fFiles" multiple accept="image/*,.pdf,.txt,.csv,.heic">
+              <span class="drop-main">Tap to add photos</span>
+              <span class="drop-sub">or drag them here &mdash; 10&nbsp;MB total</span>
+            </label>
+            <div class="filelist" id="fileList"></div>
+            <div class="hint">Big photos are shrunk automatically so they fit. Attachments arrive by email; they don't post onto the issues list on their own.</div>
+          </div>
 
-        <div class="row">
-          <button class="btn" id="submitBtn">Submit issue</button>
-          <span class="hint" id="status"></span>
+          <!-- Spam trap: real people never see or fill this. -->
+          <div class="honey" aria-hidden="true">
+            <label>Leave this blank<input type="text" name="_honey" id="fHoney" tabindex="-1" autocomplete="off"></label>
+          </div>
+
+          <div id="result"></div>
+
+          <div class="row">
+            <button type="submit" class="btn" id="submitBtn">Submit issue</button>
+            <span class="hint" id="status"></span>
+          </div>
         </div>
-      </div>
+      </form>
 
       <div id="doneWrap" class="hidden">
         <div class="done">
@@ -279,8 +362,14 @@ footer span { color: var(--red); }
    The email Sam receives carries a one-click link that adds the issue to the
    IDS list; that link is opened on Sam's machine, where the token already is. */
 var MAIL_TO   = "Sam@impactledsigns.com";
-var MAIL_URL  = "https://formsubmit.co/ajax/" + MAIL_TO;
+var MAIL_URL  = "https://formsubmit.co/" + MAIL_TO;
 var LIST_URL  = "https://sacton86.github.io/RDIDS/rd-issues-list.html";
+var PAGE_URL  = "https://sacton86.github.io/RDIDS/rd-submit.html";
+
+/* FormSubmit caps a submission at 10MB across all files. Hold back a little
+   for the text fields and multipart overhead. */
+var MAX_TOTAL = 9.5 * 1024 * 1024;
+var SHRINK_PX = 1600;
 
 function $(id) { return document.getElementById(id); }
 function uid() { return Date.now().toString(36) + Math.random().toString(36).slice(2, 7); }
@@ -321,9 +410,116 @@ function addToListUrl(sub) {
   return LIST_URL + "#add=" + toB64Url(JSON.stringify(sub));
 }
 
-/* ══════════ STATE ══════════ */
-var sending = false;
+/* ══════════ ATTACHMENTS ══════════ */
+var picked = [];   /* the File objects actually queued for upload */
+var busy   = 0;    /* images still being shrunk */
 
+function kb(n) {
+  return n >= 1024 * 1024 ? (n / 1048576).toFixed(1) + " MB" : Math.max(1, Math.round(n / 1024)) + " KB";
+}
+function totalBytes() {
+  return picked.reduce(function (sum, f) { return sum + f.size; }, 0);
+}
+function isImage(f) { return /^image\//.test(f.type) && !/svg/.test(f.type); }
+
+/* Phone photos run 3-5 MB each and three of them blow the 10 MB cap. Downscale
+   to something that still reads clearly on screen. JPEG, not WebP - it has to
+   open in whatever mail client Sam happens to be using. */
+function shrinkImage(file) {
+  if (!isImage(file) || /gif/.test(file.type)) return Promise.resolve(file);
+  if (file.size < 600 * 1024) return Promise.resolve(file);
+
+  return createImageBitmap(file).then(function (bmp) {
+    var w = bmp.width, h = bmp.height;
+    var scale = Math.min(1, SHRINK_PX / Math.max(w, h));
+    w = Math.max(1, Math.round(w * scale));
+    h = Math.max(1, Math.round(h * scale));
+
+    var cv = document.createElement("canvas");
+    cv.width = w; cv.height = h;
+    cv.getContext("2d").drawImage(bmp, 0, 0, w, h);
+    bmp.close && bmp.close();
+
+    return new Promise(function (res) {
+      cv.toBlob(function (blob) {
+        if (!blob || blob.size >= file.size) return res(file);
+        var nm = file.name.replace(/\.[^.]+$/, "") + ".jpg";
+        var out = new File([blob], nm, { type: "image/jpeg" });
+        out.wasShrunk = file.size;
+        res(out);
+      }, "image/jpeg", 0.82);
+    });
+  }).catch(function () { return file; });
+}
+
+/* The <input> is the thing that actually gets POSTed, so keep it in step with
+   `picked` after every add or removal. */
+function syncInput() {
+  try {
+    var dt = new DataTransfer();
+    picked.forEach(function (f) { dt.items.add(f); });
+    $("fFiles").files = dt.files;
+  } catch (e) {
+    /* No DataTransfer: whatever the user chose last stands, and removal is a no-op. */
+  }
+}
+
+function renderFiles() {
+  var list = $("fileList");
+  list.innerHTML = picked.map(function (f, i) {
+    var thumb = isImage(f)
+      ? '<img alt="" src="' + URL.createObjectURL(f) + '">'
+      : '<div class="doc">' + esc((f.name.split(".").pop() || "FILE").slice(0, 4).toUpperCase()) + "</div>";
+    var saved = f.wasShrunk ? ' <span class="cut">&darr; from ' + kb(f.wasShrunk) + "</span>" : "";
+    return '<div class="fchip">' + thumb +
+      '<div class="meta"><div class="nm">' + esc(f.name) + "</div>" +
+      '<div class="sz">' + kb(f.size) + saved + "</div></div>" +
+      '<button type="button" class="x" data-rm="' + i + '" aria-label="Remove ' + esc(f.name) + '">&times;</button></div>';
+  }).join("");
+
+  Array.prototype.forEach.call(list.querySelectorAll("[data-rm]"), function (b) {
+    b.onclick = function () {
+      picked.splice(parseInt(b.dataset.rm, 10), 1);
+      syncInput();
+      renderFiles();
+    };
+  });
+
+  var total = totalBytes();
+  var tally = $("sizeTally");
+  tally.textContent = picked.length ? picked.length + " file" + (picked.length > 1 ? "s" : "") + " · " + kb(total) : "";
+  tally.className = "hint count sizeTally" + (total > MAX_TOTAL ? " over" : "");
+
+  if (total > MAX_TOTAL) {
+    setResult('<div class="callout-warn"><strong>Too much to send</strong>' +
+      kb(total) + " of files - the limit is 10 MB. Remove one and try again.</div>");
+  } else if (/Too much to send/.test($("result").innerHTML)) {
+    setResult("");
+  }
+  $("submitBtn").disabled = busy > 0 || total > MAX_TOTAL;
+}
+
+function addFiles(fileList) {
+  var incoming = Array.prototype.slice.call(fileList || []);
+  if (!incoming.length) return;
+
+  busy += incoming.length;
+  renderFiles();
+  $("status").textContent = "Preparing photos...";
+
+  Promise.all(incoming.map(shrinkImage)).then(function (out) {
+    out.forEach(function (f) {
+      var dupe = picked.some(function (p) { return p.name === f.name && p.size === f.size; });
+      if (!dupe) picked.push(f);
+    });
+    busy -= incoming.length;
+    if (busy <= 0) { busy = 0; $("status").textContent = ""; }
+    syncInput();
+    renderFiles();
+  });
+}
+
+/* ══════════ STATE ══════════ */
 function setResult(html) { $("result").innerHTML = html || ""; }
 
 function showDone(msg) {
@@ -336,6 +532,9 @@ function showDone(msg) {
 function reset() {
   $("fIssue").value = "";
   $("count").textContent = "0 / 1200";
+  picked = [];
+  syncInput();
+  renderFiles();
   setResult("");
   $("status").textContent = "";
   $("doneWrap").classList.add("hidden");
@@ -343,86 +542,67 @@ function reset() {
   $("fIssue").focus();
 }
 
-/* Plain-text body used for the mailto fallback when the network is down. */
-function mailtoFallback(sub) {
-  var body =
-    "Raised by: " + sub.n + "\n" +
-    "Submitted: " + new Date(sub.d).toLocaleString() + "\n\n" +
-    sub.t + "\n\n" +
-    "-- Add to the IDS list --\n" + addToListUrl(sub) + "\n";
-  return "mailto:" + MAIL_TO +
-    "?subject=" + encodeURIComponent("R&D Issue from " + sub.n) +
-    "&body=" + encodeURIComponent(body);
+/* The page navigates away on submit, so stash the text first. If the send fails
+   the browser comes back here and the draft is still waiting. */
+var LS_DRAFT = "impact-ids-draft";
+function saveDraft(name, issue) {
+  try { localStorage.setItem(LS_DRAFT, JSON.stringify({ n: name, t: issue })); } catch (e) {}
+}
+function clearDraft() {
+  try { localStorage.removeItem(LS_DRAFT); } catch (e) {}
 }
 
 /* ══════════ SUBMIT ══════════ */
-function submit() {
-  if (sending) return;
-
+$("fForm").addEventListener("submit", function (e) {
   var name  = $("fName").value.trim();
   var issue = $("fIssue").value.trim();
 
-  if (!name)  { setResult('<div class="callout-warn"><strong>Name is missing</strong>We need to know who to come back to with questions.</div>'); $("fName").focus(); return; }
-  if (!issue) { setResult('<div class="callout-warn"><strong>Nothing to submit</strong>Describe the issue before sending it over.</div>'); $("fIssue").focus(); return; }
-  if ($("fHoney").value) { showDone("Thanks."); return; }
+  if (!name)  { e.preventDefault(); setResult('<div class="callout-warn"><strong>Name is missing</strong>We need to know who to come back to with questions.</div>'); $("fName").focus(); return; }
+  if (!issue) { e.preventDefault(); setResult('<div class="callout-warn"><strong>Nothing to submit</strong>Describe the issue before sending it over.</div>'); $("fIssue").focus(); return; }
+  if (busy > 0) { e.preventDefault(); setResult('<div class="callout-info"><strong>One moment</strong>Still preparing the photos.</div>'); return; }
+  if (totalBytes() > MAX_TOTAL) { e.preventDefault(); renderFiles(); return; }
+  if ($("fHoney").value) { e.preventDefault(); showDone("Thanks."); return; }
 
   var sub = { i: uid(), n: name, t: issue, d: now() };
 
-  setResult("");
-  sending = true;
+  $("hSubject").value = "R&D Issue from " + name;
+  $("hWhen").value    = new Date(sub.d).toLocaleString();
+  $("hLink").value    = addToListUrl(sub);
+  $("hNext").value    = PAGE_URL + "?sent=1";
+
+  saveDraft(name, issue);
   $("submitBtn").disabled = true;
-  $("status").textContent = "Sending...";
-
-  var payload = {
-    "_subject":  "R&D Issue from " + name,
-    "_template": "table",
-    "_captcha":  "false",
-    "Raised by": name,
-    "Issue":     issue,
-    "Submitted": new Date(sub.d).toLocaleString(),
-    "Add to the IDS list": addToListUrl(sub)
-  };
-
-  fetch(MAIL_URL, {
-    method: "POST",
-    headers: { "Content-Type": "application/json", "Accept": "application/json" },
-    body: JSON.stringify(payload)
-  })
-    .then(function (res) {
-      return res.json().catch(function () { return null; }).then(function (data) {
-        if (!res.ok || !data || String(data.success) !== "true") {
-          throw new Error((data && data.message) || ("Mail service returned " + res.status));
-        }
-        return data;
-      });
-    })
-    .then(function () {
-      showDone("Your issue is on its way to Sam and will be added to the R&D issues list.");
-      $("fIssue").value = "";
-      $("count").textContent = "0 / 1200";
-      toast("Issue submitted");
-    })
-    .catch(function (err) {
-      setResult(
-        '<div class="callout-danger"><strong>That didn\'t send</strong>' +
-        esc(err.message) +
-        '<br><a href="' + esc(mailtoFallback(sub)) + '">Send it by email instead</a>' +
-        ' &mdash; your text is still in the box, nothing was lost.</div>'
-      );
-    })
-    .then(function () {
-      sending = false;
-      $("submitBtn").disabled = false;
-      $("status").textContent = "";
-    });
-}
+  $("status").textContent = picked.length ? "Uploading " + kb(totalBytes()) + "..." : "Sending...";
+});
 
 /* ══════════ WIRING ══════════ */
-$("submitBtn").onclick = submit;
 $("againBtn").onclick = reset;
 
 $("fIssue").addEventListener("input", function () {
   $("count").textContent = this.value.length + " / 1200";
+});
+
+$("fFiles").addEventListener("change", function () {
+  addFiles(this.files);
+});
+
+/* Drag-and-drop onto the box, for anyone on a desktop. */
+var drop = $("drop");
+["dragenter", "dragover"].forEach(function (ev) {
+  drop.addEventListener(ev, function (e) { e.preventDefault(); drop.classList.add("over"); });
+});
+["dragleave", "drop"].forEach(function (ev) {
+  drop.addEventListener(ev, function (e) { e.preventDefault(); drop.classList.remove("over"); });
+});
+drop.addEventListener("drop", function (e) {
+  if (e.dataTransfer && e.dataTransfer.files) addFiles(e.dataTransfer.files);
+});
+
+/* Paste a screenshot straight in. */
+window.addEventListener("paste", function (e) {
+  if (!e.clipboardData) return;
+  var imgs = Array.prototype.filter.call(e.clipboardData.files || [], isImage);
+  if (imgs.length) { e.preventDefault(); addFiles(imgs); }
 });
 
 /* Enter moves on from the name field; Ctrl/Cmd+Enter sends from the textarea. */
@@ -430,20 +610,48 @@ $("fName").addEventListener("keydown", function (e) {
   if (e.key === "Enter") { e.preventDefault(); $("fIssue").focus(); }
 });
 $("fIssue").addEventListener("keydown", function (e) {
-  if (e.key === "Enter" && (e.ctrlKey || e.metaKey)) { e.preventDefault(); submit(); }
+  if (e.key === "Enter" && (e.ctrlKey || e.metaKey)) {
+    e.preventDefault();
+    if (typeof $("fForm").requestSubmit === "function") $("fForm").requestSubmit();
+    else $("submitBtn").click();
+  }
 });
 
-/* Remember the submitter's name so repeat visits only need the issue. */
 (function boot() {
+  $("fForm").action = MAIL_URL;
+  $("hNext").value  = PAGE_URL + "?sent=1";
+
+  /* Came back from a successful post: show the thank-you, drop the draft, and
+     take ?sent=1 off the URL so a refresh doesn't re-show it. */
+  if (/[?&]sent=1/.test(location.search)) {
+    clearDraft();
+    showDone("Your issue is on its way to Sam and will be added to the R&D issues list.");
+    history.replaceState(null, "", location.pathname);
+  } else {
+    /* A draft left over means the last attempt never completed. */
+    try {
+      var d = JSON.parse(localStorage.getItem(LS_DRAFT) || "null");
+      if (d && d.t) {
+        $("fName").value  = d.n || "";
+        $("fIssue").value = d.t;
+        $("count").textContent = d.t.length + " / 1200";
+        setResult('<div class="callout-warn"><strong>Picked up where you left off</strong>' +
+          "This didn't finish sending last time. Re-attach any photos, then submit again.</div>");
+      }
+    } catch (e) {}
+  }
+
+  /* Remember the submitter's name so repeat visits only need the issue. */
   try {
     var saved = localStorage.getItem("impact-ids-submitter");
-    if (saved) $("fName").value = saved;
+    if (saved && !$("fName").value) $("fName").value = saved;
   } catch (e) {}
 
   $("fName").addEventListener("change", function () {
     try { localStorage.setItem("impact-ids-submitter", this.value.trim()); } catch (e) {}
   });
 
+  renderFiles();
   ($("fName").value ? $("fIssue") : $("fName")).focus();
 })();
 </script>
