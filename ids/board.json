@@ -63,24 +63,24 @@
   ],
   "todos": [
     {
-      "id": "mtw0aq1inm34l",
-      "what": "Add emailing to closing out the week button",
-      "owner": "Sam",
-      "due": "2026-09-17",
-      "done": false,
-      "rolls": 0,
-      "from": "Emailing to do's",
-      "updatedAt": "2026-09-10T20:55:15.798Z"
-    },
-    {
       "id": "mtaihusts21m9",
       "what": "Follow up with Tyler about emailing todos",
       "owner": "SA",
       "due": "2026-09-02",
-      "done": true,
+      "done": false,
       "rolls": 1,
       "from": "",
-      "updatedAt": "2026-09-10T20:55:21.712Z"
+      "updatedAt": "2026-09-14T20:31:22.733Z"
+    },
+    {
+      "id": "mtw0aq1inm34l",
+      "what": "Add emailing to closing out the week button",
+      "owner": "Sam",
+      "due": "2026-09-17",
+      "done": true,
+      "rolls": 0,
+      "from": "Emailing to do's",
+      "updatedAt": "2026-09-14T20:31:21.846Z"
     }
   ],
   "solved": [
