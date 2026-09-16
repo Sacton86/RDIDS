@@ -9,16 +9,6 @@
       "updatedAt": "2026-09-09T19:34:35.647Z",
       "attachments": [],
       "links": []
-    },
-    {
-      "id": "mu1p6qsdpez60",
-      "title": "Submit R&D invoice to accounting",
-      "raisedBy": "",
-      "notes": "",
-      "created": "2026-09-14",
-      "updatedAt": "2026-09-14T20:30:51.421Z",
-      "attachments": [],
-      "links": []
     }
   ],
   "todos": [
@@ -44,6 +34,14 @@
     }
   ],
   "solved": [
+    {
+      "id": "mu1p6qsdpez60",
+      "title": "Submit R&D invoice to accounting",
+      "notes": "",
+      "attachments": [],
+      "links": [],
+      "on": "2026-09-16"
+    },
     {
       "id": "mu1p266s46l7w",
       "title": "Add, Cloud Upgrade Kit to the item list, All Gens",
