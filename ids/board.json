@@ -11,16 +11,6 @@
       "links": []
     },
     {
-      "id": "mu1jv74z86kwd",
-      "title": "Notes field, Per item discount",
-      "raisedBy": "SAm",
-      "notes": "- Submitted by SAm on 9/14/2026, 9:32:03 AM via the submission form.\n\nThis has been added to the form.",
-      "created": "2026-09-14",
-      "updatedAt": "2026-09-16T19:27:14.406Z",
-      "attachments": [],
-      "links": []
-    },
-    {
       "id": "mu1jvlnwb6jjh",
       "title": "Add power cable for g3 to the item list, and bulkhead.",
       "raisedBy": "San",
@@ -84,6 +74,14 @@
     }
   ],
   "solved": [
+    {
+      "id": "mu1jv74z86kwd",
+      "title": "Notes field, Per item discount",
+      "notes": "- Submitted by SAm on 9/14/2026, 9:32:03 AM via the submission form.\n\nThis has been added to the form.",
+      "attachments": [],
+      "links": [],
+      "on": "2026-09-16"
+    },
     {
       "id": "mu1juw7n4o1xi",
       "title": "Add attachment to my note thingy",
