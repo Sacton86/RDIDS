@@ -9,16 +9,6 @@
       "updatedAt": "2026-09-09T19:34:35.647Z",
       "attachments": [],
       "links": []
-    },
-    {
-      "id": "mu1p266s46l7w",
-      "title": "Add, Cloud Upgrade Kit to the item list, All Gens",
-      "raisedBy": "Sam",
-      "notes": "- Submitted by Sam on 9/14/2026, 4:26:35 PM via the submission form.",
-      "created": "2026-09-14",
-      "updatedAt": "2026-09-14T20:27:18.101Z",
-      "attachments": [],
-      "links": []
     }
   ],
   "todos": [
@@ -33,7 +23,16 @@
       "updatedAt": "2026-09-16T20:55:26.897Z"
     }
   ],
-  "solved": [],
+  "solved": [
+    {
+      "id": "mu1p266s46l7w",
+      "title": "Add, Cloud Upgrade Kit to the item list, All Gens",
+      "notes": "- Submitted by Sam on 9/14/2026, 4:26:35 PM via the submission form.",
+      "attachments": [],
+      "links": [],
+      "on": "2026-09-16"
+    }
+  ],
   "weeks": [
     "2026-09-14",
     "2026-08-24"
