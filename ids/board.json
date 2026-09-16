@@ -21,16 +21,6 @@
       "links": []
     },
     {
-      "id": "mu1lkwx60wt7s",
-      "title": "Female-to-female Ethernet port DP and EU costs added to G3 Price List",
-      "raisedBy": "Zac Fisher",
-      "notes": "- Submitted by Zac Fisher on 9/14/2026, 11:27:45 AM via the submission form.\n\nAdded to price List",
-      "created": "2026-09-14",
-      "updatedAt": "2026-09-16T19:31:19.427Z",
-      "attachments": [],
-      "links": []
-    },
-    {
       "id": "mu1p266s46l7w",
       "title": "Add, Cloud Upgrade Kit to the item list, All Gens",
       "raisedBy": "Sam",
@@ -74,6 +64,14 @@
     }
   ],
   "solved": [
+    {
+      "id": "mu1lkwx60wt7s",
+      "title": "Female-to-female Ethernet port DP and EU costs added to G3 Price List",
+      "notes": "- Submitted by Zac Fisher on 9/14/2026, 11:27:45 AM via the submission form.\n\nAdded to price List",
+      "attachments": [],
+      "links": [],
+      "on": "2026-09-16"
+    },
     {
       "id": "mu1jv74z86kwd",
       "title": "Notes field, Per item discount",
