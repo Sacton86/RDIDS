@@ -1,6 +1,6 @@
 {
   "week": "2026-09-14",
-  "closedAt": "2026-09-16T19:52:12.720Z",
+  "closedAt": "2026-09-16T20:55:25.828Z",
   "solved": [
     {
       "id": "mu1p6qsdpez60",
@@ -11,25 +11,9 @@
       "on": "2026-09-16"
     },
     {
-      "id": "mu1p266s46l7w",
-      "title": "Add, Cloud Upgrade Kit to the item list, All Gens",
-      "notes": "- Submitted by Sam on 9/14/2026, 4:26:35 PM via the submission form.\nThis has been added to the list",
-      "attachments": [],
-      "links": [],
-      "on": "2026-09-16"
-    },
-    {
       "id": "mu1jvlnwb6jjh",
       "title": "Add power cable for g3 to the item list, and bulkhead.",
-      "notes": "- Submitted by San on 9/14/2026, 9:30:15 AM via the submission form.\nThis has been added to the list",
-      "attachments": [],
-      "links": [],
-      "on": "2026-09-16"
-    },
-    {
-      "id": "mu1lkwx60wt7s",
-      "title": "Female-to-female Ethernet port DP and EU costs added to G3 Price List",
-      "notes": "- Submitted by Zac Fisher on 9/14/2026, 11:27:45 AM via the submission form.\n\nAdded to price List",
+      "notes": "- Submitted by San on 9/14/2026, 9:30:15 AM via the submission form.",
       "attachments": [],
       "links": [],
       "on": "2026-09-16"
@@ -88,19 +72,17 @@
       ],
       "links": [],
       "on": "2026-09-10"
+    },
+    {
+      "id": "mu1lkwx60wt7s",
+      "title": "Female-to-female Ethernet port DP and EU costs added to G3 Price List",
+      "notes": "- Submitted by Zac Fisher on 9/14/2026, 11:27:45 AM via the submission form.\n\nAdded to price List",
+      "attachments": [],
+      "links": [],
+      "on": "2026-09-16"
     }
   ],
   "completedTodos": [
-    {
-      "id": "mtaihusts21m9",
-      "what": "Follow up with Tyler about emailing todos",
-      "owner": "SA",
-      "due": "2026-09-02",
-      "done": true,
-      "rolls": 1,
-      "from": "",
-      "updatedAt": "2026-09-16T19:51:58.605Z"
-    },
     {
       "id": "mtw0aq1inm34l",
       "what": "Add emailing to closing out the week button",
@@ -112,11 +94,23 @@
       "updatedAt": "2026-09-14T20:31:21.846Z"
     }
   ],
-  "carriedTodos": [],
+  "carriedTodos": [
+    {
+      "what": "Follow up with Tyler about emailing todos",
+      "owner": "SA",
+      "due": "2026-09-02",
+      "rolls": 2
+    }
+  ],
   "openIssues": [
     {
       "rank": 1,
       "title": "Weight Testing",
+      "raisedBy": "Sam"
+    },
+    {
+      "rank": 2,
+      "title": "Add, Cloud Upgrade Kit to the item list, All Gens",
       "raisedBy": "Sam"
     }
   ]
